@@ -9,7 +9,7 @@ public class NewBehaviourScript : MonoBehaviour
 
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firingPos;
-    [Range(0.1f, 1)]
+    [Range(0.1f, 3f)]
     [SerializeField] private float fireRate = 1f;
     private float fireTimer;
 
@@ -22,7 +22,8 @@ public class NewBehaviourScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();          
+        rb = GetComponent<Rigidbody2D>();
+        fireTimer = fireRate;
     }
 
     // Update is called once per frame
