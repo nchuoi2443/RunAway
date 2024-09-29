@@ -58,4 +58,13 @@ public class NewBehaviourScript : MonoBehaviour
     {
         rb.velocity = new Vector2(mx,my).normalized * speed;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("EnemyBullet"))
+        {
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
+        }
+    }
 }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2028196292367997921}
-  - component: {fileID: 7248158637605972107}
+  - component: {fileID: -7477191612117244925}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7248158637605972107
+--- !u!114 &-7477191612117244925
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,12 +41,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 43400790827753238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0bd4927dc9bc7a4d96f0f54a79d336d, type: 3}
+  m_Script: {fileID: 11500000, guid: 6acc736dffd774e40a38af04da6e6f2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnerTime: 5
   enemyPrefabs:
   - {fileID: 3518155981875880286, guid: d81e95a5655af76419efc5f0e822ae57, type: 3}
-  - {fileID: 3518155981875880286, guid: d0af6b3610d2fcb4289804078a755b89, type: 3}
-  - {fileID: 3518155981875880286, guid: d24c7ed03a580254695877611d2efb80, type: 3}
   canSpawn: 1
