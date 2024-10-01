@@ -29,6 +29,7 @@ public class NewBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         //get value of the input 
         mx = Input.GetAxisRaw("Horizontal");
         my = Input.GetAxisRaw("Vertical");
@@ -64,8 +65,9 @@ public class NewBehaviourScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("EnemyBullet"))
         {
+            LevelManager.manager.GameOver();
             Destroy(collision.gameObject);
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 }

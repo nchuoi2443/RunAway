@@ -17,6 +17,7 @@ public class RangeEnemy : Enemy
     private void Awake()
     {
         fireRateTimer = fireRate;
+        TypeOfEnemy = "rangeEnemy";
     }
     private void Update()
     {
@@ -37,6 +38,7 @@ public class RangeEnemy : Enemy
     //add enemy with max range attack and fire range have the same value, and will update after done that!
     private void FixedUpdate()
     {
+        //if (Target == null) return;
         if (Vector2.Distance(Target.position, transform.position) > attackRange)
         {
             //move forward

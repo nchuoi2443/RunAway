@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class ChasingEnemy : Enemy
 {
+    public override void Start()
+    {
+        base.Start();
+        TypeOfEnemy = "chasingEnemy";
+    }
     private void Update()
     {
         if (Target!)

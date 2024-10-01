@@ -9,6 +9,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float speed = 3f;
     [SerializeField] private float rotateSpeed = 0.25f;
 
+    private string typeOfEnemy;
+
+    public string TypeOfEnemy
+    {
+        get { return typeOfEnemy; }
+        set { typeOfEnemy = value; }
+
+    }
     // Getter và Setter cho target
     public Transform Target
     {
@@ -38,7 +46,7 @@ public class Enemy : MonoBehaviour
         get { return rb; }
         set { rb = value; }
     }
-    public void Start()
+    public virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
@@ -65,10 +73,13 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Destroy(collision.gameObject);
+            LevelManager.manager.GameOver();
+            //Destroy(collision.gameObject);
             Target = null;
         } else if (collision.gameObject.CompareTag("PlayerBullet"))
         {
+            if (TypeOfEnemy == "chasingEnemy") LevelManager.manager.updateScore(1);
+            else if (TypeOfEnemy == "rangeEnemy") LevelManager.manager.updateScore(3);
             Destroy(collision.gameObject);
             Destroy(gameObject);
         }
