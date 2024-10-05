@@ -7,10 +7,12 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private float speed = 3f;
-    [SerializeField] private float rotateSpeed = 0.25f;
 
     private string typeOfEnemy;
 
+    private Animator enemyAnimator;
+    private bool stopMovingWhileAttacking;
+    public Animator EnemyAnimator { get { return enemyAnimator; } set { enemyAnimator = value; } }
     public string TypeOfEnemy
     {
         get { return typeOfEnemy; }
@@ -31,12 +33,6 @@ public class Enemy : MonoBehaviour
         set { speed = value; }
     }
 
-    // Getter và Setter cho rotateSpeed
-    public float RotateSpeed
-    {
-        get { return rotateSpeed; }
-        set { rotateSpeed = value; }
-    }
 
     private Rigidbody2D rb;
 
@@ -49,6 +45,7 @@ public class Enemy : MonoBehaviour
     public virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        enemyAnimator = GetComponent<Animator>();
     }
 
 
@@ -60,15 +57,29 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void rotateTowardTarget()
+    public void facingPlayer()
     {
-        Vector2 targetDirection = Target.position - transform.position;
-        float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 90;
-        Quaternion q = Quaternion.Euler(new Vector3(0, 0, angle));
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, q, rotateSpeed);
-        
+        //flip enemy to face player
+        if (Target.position.x < transform.position.x)
+        {
+            gameObject.transform.localScale = new Vector3(-1, 1, 1);
+        }
+        else
+        {
+            gameObject.transform.localScale = new Vector3(1, 1, 1);
+        }
+
     }
 
+    public void moveTorwardPlayer()
+    {
+        float vectorX = transform.position.x - Target.position.x;
+        float vectorY = transform.position.y - Target.position.y;
+
+        rb.velocity = new Vector2(vectorX, vectorY).normalized * -speed;
+    }
+
+ 
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))

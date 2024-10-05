@@ -31,7 +31,7 @@ public class RangeEnemy : Enemy
         }
         else
         {
-            rotateTowardTarget();
+            facingPlayer();
         }
     }
 
@@ -41,23 +41,32 @@ public class RangeEnemy : Enemy
         //if (Target == null) return;
         if (Vector2.Distance(Target.position, transform.position) > attackRange)
         {
-            //move forward
-            Rb.velocity = transform.up * Speed;
+            //move to player
+            moveTorwardPlayer();
+
         } else
         {
-            
-            if (fireRateTimer <= 0)
-            {
-                Shoot();
-                fireRateTimer = fireRate;
-            } else
-            {
-                fireRateTimer -= Time.deltaTime;
-            }
+            timer();
+            //Debug.Log("hello");
         }
     }
 
-    void Shoot()
+    public void timer()
+    {
+        if (fireRateTimer <= 0)
+        {
+            EnemyAnimator.SetBool("isAttack", true);
+            fireRateTimer = fireRate;
+        }
+        else
+        {
+            fireRateTimer -= Time.deltaTime;
+            //EnemyAnimator.SetBool("isAttack", false);
+        }
+
+    }
+
+    public void Shoot()
     {
         Instantiate(bulletPrefab, firePos.position, firePos.rotation);
     }

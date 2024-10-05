@@ -21,13 +21,13 @@ public class ChasingEnemy : Enemy
         }
         else
         {
-            rotateTowardTarget();
+            //rotateTowardTarget();
         }
     }
 
     private void FixedUpdate()
     {
         //move forward
-        Rb.velocity = transform.up * Speed;
+        moveTorwardPlayer();
     }
 }

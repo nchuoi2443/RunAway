@@ -19,27 +19,32 @@ public class NewBehaviourScript : MonoBehaviour
 
     private Vector2 mousePos;
 
+    private Animator animator;
+    private SpriteRenderer mySpriteRenderer;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         fireTimer = fireRate;
+        animator = GetComponent<Animator>();
+        mySpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        playerInput();
         
-        //get value of the input 
-        mx = Input.GetAxisRaw("Horizontal");
-        my = Input.GetAxisRaw("Vertical");
+        playerFacingMouse(); 
+        /*
         //get mouse position on the screen
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //calculate the angle btw gun of player and mouse pos
         float angle = Mathf.Atan2(mousePos.y - rb.position.y, mousePos.x - rb.position.x) * Mathf.Rad2Deg - 90f ;
         //rotate 
         transform.localRotation = Quaternion.Euler(0,0,angle);
-
+        */
         if (Input.GetMouseButton(0) && fireTimer <= 0f)
         {
             Shoot();
@@ -49,6 +54,32 @@ public class NewBehaviourScript : MonoBehaviour
             fireTimer -= Time.deltaTime;
         }
         //
+    }
+
+    private void playerInput()
+    {
+        //get value of the input 
+        mx = Input.GetAxisRaw("Horizontal");
+        my = Input.GetAxisRaw("Vertical");
+        //set value for animator
+        animator.SetFloat("moveX", mx);
+        animator.SetFloat("moveY", my);
+    }
+
+    private void playerFacingMouse()
+    {
+        //get mouse position on the screen
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //flip player to the part have mouse
+        if (mousePos.x < transform.position.x)
+        {
+            mySpriteRenderer.flipX = true;
+        }
+        else
+        {
+            mySpriteRenderer.flipX = false;
+        }
+
     }
 
     private void Shoot()
