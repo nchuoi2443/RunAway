@@ -46,22 +46,21 @@ public class RangeEnemy : Enemy
 
         } else
         {
-            timer();
+            enemyAttacking();
             //Debug.Log("hello");
         }
     }
 
-    public void timer()
+    public void enemyAttacking()
     {
         if (fireRateTimer <= 0)
         {
-            EnemyAnimator.SetBool("isAttack", true);
+            EnemyAnimator.SetTrigger("onRanged");
             fireRateTimer = fireRate;
         }
         else
         {
             fireRateTimer -= Time.deltaTime;
-            //EnemyAnimator.SetBool("isAttack", false);
         }
 
     }

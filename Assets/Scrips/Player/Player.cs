@@ -22,7 +22,6 @@ public class NewBehaviourScript : MonoBehaviour
     private Animator animator;
     private SpriteRenderer mySpriteRenderer;
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -31,29 +30,11 @@ public class NewBehaviourScript : MonoBehaviour
         mySpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         playerInput();
-        
         playerFacingMouse(); 
-        /*
-        //get mouse position on the screen
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //calculate the angle btw gun of player and mouse pos
-        float angle = Mathf.Atan2(mousePos.y - rb.position.y, mousePos.x - rb.position.x) * Mathf.Rad2Deg - 90f ;
-        //rotate 
-        transform.localRotation = Quaternion.Euler(0,0,angle);
-        */
-        if (Input.GetMouseButton(0) && fireTimer <= 0f)
-        {
-            Shoot();
-            fireTimer = fireRate;
-        } else
-        {
-            fireTimer -= Time.deltaTime;
-        }
-        //
+     
     }
 
     private void playerInput()
