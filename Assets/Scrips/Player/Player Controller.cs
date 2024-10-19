@@ -8,8 +8,12 @@ public class PlayerController : MonoBehaviour
 {    
     [SerializeField] private float movementSpeed = 2f;  
     
+    public static PlayerController Instance { get; private set; }
+
     private PlayerControls playerControls;
     private Vector2 movement;
+
+
     private Rigidbody2D rb;
 
     private Vector2 mousePos;
@@ -18,9 +22,11 @@ public class PlayerController : MonoBehaviour
 
     private bool facingLeft;
 
+ 
     public bool FacingLeft { get { return facingLeft; } set { facingLeft = value; } }
     private void Awake()
     {
+        Instance = this;
         rb = GetComponent<Rigidbody2D>();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();

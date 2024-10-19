@@ -24,10 +24,14 @@ public class ChasingEnemy : Enemy
             //rotateTowardTarget();
         }
     }
-
-    private void FixedUpdate()
+    
+    public override void FixedUpdate()
     {
+        base.FixedUpdate();
         //move forward
-        moveTorwardPlayer();
+        if (!KnockBack.isKnockBack)
+        {
+            moveTorwardPlayer();
+        }
     }
 }

@@ -12,6 +12,16 @@ public class Enemy : MonoBehaviour
 
     private Animator enemyAnimator;
     private bool stopMovingWhileAttacking;
+
+    private KnockBack knockBack;
+    public KnockBack KnockBack { get { return knockBack; } set { knockBack = value; } }
+
+    ~Enemy()
+    {
+        // Perform cleanup operations here
+        Debug.Log("Enemy object is being destroyed.");
+    }
+
     public Animator EnemyAnimator { get { return enemyAnimator; } set { enemyAnimator = value; } }
     public string TypeOfEnemy
     {
@@ -46,8 +56,13 @@ public class Enemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         enemyAnimator = GetComponent<Animator>();
+        knockBack = GetComponent<KnockBack>();
     }
 
+    public virtual void FixedUpdate()
+    {
+        if (knockBack.isKnockBack == true) return;
+    }
 
     public void getTarget()
     {
@@ -84,15 +99,15 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            LevelManager.manager.GameOver();
+            /*LevelManager.manager.GameOver();
             //Destroy(collision.gameObject);
-            Target = null;
+            Target = null;*/
         } else if (collision.gameObject.CompareTag("PlayerBullet"))
         {
             if (TypeOfEnemy == "chasingEnemy") LevelManager.manager.updateScore(1);
             else if (TypeOfEnemy == "rangeEnemy") LevelManager.manager.updateScore(3);
-            Destroy(collision.gameObject);
-            Destroy(gameObject);
+            /*Destroy(collision.gameObject);
+            Destroy(gameObject);*/
         }
     }
 }

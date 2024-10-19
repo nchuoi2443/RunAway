@@ -36,8 +36,12 @@ public class RangeEnemy : Enemy
     }
 
     //add enemy with max range attack and fire range have the same value, and will update after done that!
-    private void FixedUpdate()
+    public override void FixedUpdate()
     {
+        if(KnockBack.isKnockBack)
+        {
+            return;
+        }
         //if (Target == null) return;
         if (Vector2.Distance(Target.position, transform.position) > attackRange)
         {

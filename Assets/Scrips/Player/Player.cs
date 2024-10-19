@@ -22,6 +22,7 @@ public class NewBehaviourScript : MonoBehaviour
     private Animator animator;
     private SpriteRenderer mySpriteRenderer;
 
+    
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -77,9 +78,9 @@ public class NewBehaviourScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("EnemyBullet"))
         {
-            LevelManager.manager.GameOver();
+            /*LevelManager.manager.GameOver();
             Destroy(collision.gameObject);
-            //Destroy(gameObject);
+            //Destroy(gameObject);*/
         }
     }
 }
