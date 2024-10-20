@@ -6,8 +6,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {    
-    [SerializeField] private float movementSpeed = 2f;  
-    
+    [SerializeField] private float movementSpeed = 2f;
+    [SerializeField] private float dashSpeed = 4f;
+    [SerializeField] private TrailRenderer trailRenderer;
+    [SerializeField] private float DashCD = 1f;
     public static PlayerController Instance { get; private set; }
 
     private PlayerControls playerControls;
@@ -19,17 +21,45 @@ public class PlayerController : MonoBehaviour
     private Vector2 mousePos;
     private Animator animator;
     private SpriteRenderer mySpriteRenderer;
-
+    private float startMoveSpeed;
     private bool facingLeft;
-
+    private bool isDashing = false;
  
-    public bool FacingLeft { get { return facingLeft; } set { facingLeft = value; } }
+    public bool FacingLeft { get { return facingLeft; } }
     private void Awake()
     {
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        startMoveSpeed = movementSpeed;
+    }
+
+    private void Start()
+    {
+        playerControls.Combat.Dash.performed += _ => Dash();
+    }
+
+    //dash and cooldown of dash
+    private void Dash()
+    {
+        if (!isDashing)
+        {
+            isDashing = true;
+            movementSpeed *= dashSpeed;
+            trailRenderer.emitting = true;
+            StartCoroutine(DashRoutine());
+        }
+    }
+
+    private IEnumerator DashRoutine()
+    {
+        float DashTime = 0.2f;
+        yield return new WaitForSeconds(DashTime);
+        movementSpeed = startMoveSpeed;
+        trailRenderer.emitting = false;
+        yield return new WaitForSeconds(DashCD);
+        isDashing = false;
     }
 
     private void FixedUpdate()
@@ -73,12 +103,12 @@ public class PlayerController : MonoBehaviour
         if (mousePos.x < transform.position.x)
         {
             mySpriteRenderer.flipX = true;
-            FacingLeft = true;
+            facingLeft = true;
         }
         else
         {
             mySpriteRenderer.flipX = false;
-            FacingLeft = false;
+            facingLeft = false;
         }
 
     }

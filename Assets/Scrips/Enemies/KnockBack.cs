@@ -7,9 +7,7 @@ public class KnockBack : MonoBehaviour
     [SerializeField] private float knockBackTime = .2f;
 
     private Rigidbody2D rb;
-
     public bool isKnockBack { get; private set; }
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -21,12 +19,8 @@ public class KnockBack : MonoBehaviour
     {
         isKnockBack = true;
         Vector2 difference = (transform.position - damageSource.position).normalized * knockBackThrush * rb.mass;
-        ApplyVelocity(difference);
+        rb.AddForce(difference, ForceMode2D.Impulse);
         StartCoroutine(KnockBackTimer());
-    }
-    private void ApplyVelocity(Vector2 velocity)
-    {
-        rb.velocity = velocity;
     }
     // Coroutine to reset knockback
     private IEnumerator KnockBackTimer()

@@ -8,12 +8,8 @@ public class Damagable : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Debug.Log("Trigger Collision");
-        if (collision.gameObject.GetComponent<EnemyHealth>())
-        {
-            EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
-            enemyHealth.TakeDamage(damageOnEnemy);
-        }
+        EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
+        enemyHealth?.TakeDamage(damageOnEnemy);
     }
 }
 

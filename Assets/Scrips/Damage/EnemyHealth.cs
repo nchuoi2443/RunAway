@@ -9,6 +9,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private GameObject deadVFXFrefab;
     private int currentHealth;
     private KnockBack knockBack;
+    private float knockBackThrust = 15f;
 
 
     private void Awake()
@@ -20,7 +21,7 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        knockBack.GetKnockBack(PlayerController.Instance.transform, 15f);
+        knockBack.GetKnockBack(PlayerController.Instance.transform, knockBackThrust);
         if (currentHealth <= 0)
         {
             Instantiate(deadVFXFrefab, transform.position, quaternion.identity);
