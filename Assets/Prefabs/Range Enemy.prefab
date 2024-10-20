@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 5619788251652015503}
   - component: {fileID: 8610743069262397802}
   - component: {fileID: 7890487624922420572}
+  - component: {fileID: 1010659668761630377}
   m_Layer: 11
   m_Name: Range Enemy
   m_TagString: Untagged
@@ -329,4 +330,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd049fa845701b749a0bc7bbc33a67f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
+  maxHealth: 5
+  deadVFXFrefab: {fileID: 1797233490523741132, guid: ce05f5ffcf5953c4dab31ad1ed116793, type: 3}
+--- !u!114 &1010659668761630377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6106583928349248037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7b5bf7d962a61418c526ed30bd6253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockBackTime: 0.05
