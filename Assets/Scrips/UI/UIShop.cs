@@ -10,13 +10,17 @@ public class UIShop : MonoBehaviour
     private Transform container;
     private Transform shopItemTemplate;
 
+    private Transform inventoryContainer;
+    private Transform inventoryItemTemplate;
     private void Awake()
     {
         container = transform.Find("Container");
         shopItemTemplate = container.Find("ShopItemTemplate");
 
         shopItemTemplate.gameObject.SetActive(false);
-        
+
+        /*inventoryContainer = transform.Find("InventoryContainer");
+        inventoryItemTemplate = inventoryContainer.Find("InventoryItemTemplate");*/
     }
 
     private void Start()
@@ -29,6 +33,9 @@ public class UIShop : MonoBehaviour
         CreateShopItem(Items.ItemType.Bow, Items.GetSprite(Items.ItemType.Bow), "Bow", Items.GetCost(Items.ItemType.Bow), 5);
         CreateShopItem(Items.ItemType.Staff, Items.GetSprite(Items.ItemType.Staff), "Staff", Items.GetCost(Items.ItemType.Staff), 6);
 
+        /*CreateInventoryItem(Items.GetSprite(Items.ItemType.Sword), 0);
+        CreateInventoryItem(Items.GetSprite(Items.ItemType.Bow), 1);
+        CreateInventoryItem(Items.GetSprite(Items.ItemType.Staff), 2);*/
     }
 
     private void CreateShopItem(Items.ItemType itemType, Sprite itemSprite, string itemName, int itemPrice, int positionIndex)
@@ -47,6 +54,14 @@ public class UIShop : MonoBehaviour
         };
     }
 
+   /* private void CreateInventoryItem(Sprite itemSprite, int positionIndex)
+    {
+        Transform inventoryItemTransform = Instantiate(inventoryItemTemplate, inventoryContainer);
+        RectTransform inventoryItemRectTransform = inventoryItemTransform.GetComponent<RectTransform>();
+        float inventoryItemWidth = 140f;
+        inventoryItemRectTransform.anchoredPosition = new Vector2(inventoryItemWidth * positionIndex, 0);
+        inventoryItemTransform.Find("itemImage").GetComponent<Image>().sprite = itemSprite;
+    }*/
     private void TryBuyItem(Items.ItemType itemType)
     {
         
