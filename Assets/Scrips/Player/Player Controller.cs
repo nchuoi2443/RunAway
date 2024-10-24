@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     private bool facingLeft;
     private bool isDashing = false;
  
+    private KnockBack knockBack;
     public bool FacingLeft { get { return facingLeft; } }
     private void Awake()
     {
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
         mySpriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         startMoveSpeed = movementSpeed;
+        knockBack = GetComponent<KnockBack>();
     }
 
     private void Start()
@@ -92,6 +94,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
+        if (knockBack.isKnockBack) return;
         rb.MovePosition(rb.position + movement * (movementSpeed * Time.deltaTime));
     }
 

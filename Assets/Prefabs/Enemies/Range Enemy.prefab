@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 8610743069262397802}
   - component: {fileID: 7890487624922420572}
   - component: {fileID: 1010659668761630377}
+  - component: {fileID: 1217024935259103613}
   m_Layer: 11
   m_Name: Range Enemy
   m_TagString: Untagged
@@ -345,3 +346,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knockBackTime: 0.05
+--- !u!114 &1217024935259103613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6106583928349248037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8df51f7ca4385e94c8f839641ceb296d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitMaterial: {fileID: 2100000, guid: 1d1febb8b8da84e4faa6c7c59cf9f65e, type: 2}
+  resetMaterialTime: 0.2
