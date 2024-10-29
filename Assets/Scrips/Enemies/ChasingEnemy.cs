@@ -27,7 +27,10 @@ public class ChasingEnemy : Enemy
     
     public override void FixedUpdate()
     {
-        base.FixedUpdate();
+        if (IsBocked)
+        {
+            return;
+        }
         //move forward
         if (!KnockBack.isKnockBack)
         {

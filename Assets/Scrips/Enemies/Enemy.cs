@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -14,39 +14,34 @@ public class Enemy : MonoBehaviour
     private bool stopMovingWhileAttacking;
 
     private KnockBack knockBack;
-    public KnockBack KnockBack { get { return knockBack; } set { knockBack = value; } }
+    private Vector2 randomDirection;
 
-    ~Enemy()
-    {
-        // Perform cleanup operations here
-        Debug.Log("Enemy object is being destroyed.");
-    }
+    protected bool IsBocked = false;
+    public KnockBack KnockBack { get { return knockBack; } set { knockBack = value; } }
 
     public Animator EnemyAnimator { get { return enemyAnimator; } set { enemyAnimator = value; } }
     public string TypeOfEnemy
     {
         get { return typeOfEnemy; }
         set { typeOfEnemy = value; }
-
     }
-    // Getter v� Setter cho target
+    // Getter và Setter cho target
     public Transform Target
     {
         get { return target; }
         set { target = value; }
     }
 
-    // Getter v� Setter cho speed
+    // Getter và Setter cho speed
     public float Speed
     {
         get { return speed; }
         set { speed = value; }
     }
 
-
     private Rigidbody2D rb;
 
-    // Getter v� Setter cho rb (Rigidbody2D)
+    // Getter và Setter cho rb (Rigidbody2D)
     public Rigidbody2D Rb
     {
         get { return rb; }
@@ -61,7 +56,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void FixedUpdate()
     {
-        if (knockBack.isKnockBack == true) return;
+        
     }
 
     public void getTarget()
@@ -83,7 +78,6 @@ public class Enemy : MonoBehaviour
         {
             gameObject.transform.localScale = new Vector3(1, 1, 1);
         }
-
     }
 
     public void moveTorwardPlayer()
@@ -94,7 +88,6 @@ public class Enemy : MonoBehaviour
         rb.velocity = new Vector2(vectorX, vectorY).normalized * -speed;
     }
 
- 
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -102,12 +95,41 @@ public class Enemy : MonoBehaviour
             /*LevelManager.manager.GameOver();
             //Destroy(collision.gameObject);
             Target = null;*/
-        } else if (collision.gameObject.CompareTag("PlayerBullet"))
+        }
+        else if (collision.gameObject.CompareTag("PlayerBullet"))
         {
             if (TypeOfEnemy == "chasingEnemy") LevelManager.manager.updateScore(1);
             else if (TypeOfEnemy == "rangeEnemy") LevelManager.manager.updateScore(3);
             /*Destroy(collision.gameObject);
             Destroy(gameObject);*/
         }
+        else if (collision.gameObject.CompareTag("Environment"))
+        {
+            Vector2 collisionNormal = collision.contacts[0].normal;  // Lấy vector pháp tuyến của vật va chạm
+            SetRandomDirection(collisionNormal);
+            IsBocked = true;
+            StartCoroutine(MoveToRandomPos());
+        }
+    }
+
+    private void SetRandomDirection(Vector2 collisionNormal)
+    {
+        // Tạo hai vector vuông góc (perpendicular) với vector pháp tuyến của vật va chạm
+        Vector2 leftDirection = new Vector2(-collisionNormal.y, collisionNormal.x);   // Sang trái
+        Vector2 rightDirection = new Vector2(collisionNormal.y, -collisionNormal.x);  // Sang phải
+
+        // Random chọn hướng trái hoặc phải
+        float randomValue = UnityEngine.Random.Range(0f, 1f);  // Trả về giá trị giữa 0 và 1
+        Vector2 randomDirection = (randomValue < 0.5f) ? leftDirection : rightDirection;
+
+        // Đặt vận tốc cho enemy di chuyển theo hướng đã chọn
+        rb.velocity = randomDirection * speed;
+    }
+
+    public IEnumerator MoveToRandomPos()
+    {
+        yield return new WaitForSeconds(1f);
+        IsBocked = false;
+        Debug.Log("Move to randonpos" + IsBocked); 
     }
 }

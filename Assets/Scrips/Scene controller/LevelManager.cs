@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : Singleton<LevelManager>
 {
     public static LevelManager manager;
 
@@ -19,12 +19,12 @@ public class LevelManager : MonoBehaviour
         get {  return score; }
         set{ score = value; }
     }
-    private void Awake()
+    protected override void Awake()
     {
-        manager = this; //đảo bảo chỉ có một Level manager tồn tại (singleton)
         HighScore.Initialize();
 
         data = new SaveData(0);
+        deathScreen.SetActive(false);
     }
 
     public void GameOver()
@@ -52,14 +52,19 @@ public class LevelManager : MonoBehaviour
     public void ReplayGame()
     {
         Debug.Log("I'm got calling");
+        //recall the scene and reload everything in scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+    public void BackToMainMenu(string name) { SceneManager.LoadScene(name); }
 
     public void updateScore(int mount)
     {
         score += mount;
     }
 }
+
+
 [System.Serializable]
 public class SaveData
 {

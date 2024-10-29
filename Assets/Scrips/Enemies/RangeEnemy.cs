@@ -13,45 +13,41 @@ public class RangeEnemy : Enemy
     [SerializeField] private float fireRate = 1.5f;
     private float fireRateTimer;
     [SerializeField] private Transform firePos;
-
+    private bool canAttack;
     private void Awake()
     {
         fireRateTimer = fireRate;
         TypeOfEnemy = "rangeEnemy";
-    }
-    private void Update()
-    {
         if (Target!)
         {
             getTarget();
         }
-        if (Target == null)
-        {
-            Debug.Log("we got nothing");
-        }
-        else
-        {
-            facingPlayer();
-        }
+    }
+    private void Update()
+    {
+        
+        facingPlayer();
     }
 
     //add enemy with max range attack and fire range have the same value, and will update after done that!
     public override void FixedUpdate()
     {
-        if(KnockBack.isKnockBack)
+        if (IsBocked)
         {
             return;
         }
-        //if (Target == null) return;
-        if (Vector2.Distance(Target.position, transform.position) > attackRange)
+        if (!KnockBack.isKnockBack)
         {
-            //move to player
-            moveTorwardPlayer();
+            if (Vector2.Distance(Target.position, transform.position) > attackRange)
+            {
+                moveTorwardPlayer();
 
-        } else
-        {
-            enemyAttacking();
-            //Debug.Log("hello");
+            }
+            else
+            {
+                enemyAttacking();
+                //Debug.Log("hello");
+            }
         }
     }
 

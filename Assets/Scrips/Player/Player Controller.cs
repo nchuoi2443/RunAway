@@ -4,13 +4,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {    
     [SerializeField] private float movementSpeed = 2f;
     [SerializeField] private float dashSpeed = 4f;
     [SerializeField] private TrailRenderer trailRenderer;
     [SerializeField] private float DashCD = 1f;
-    public static PlayerController Instance { get; private set; }
+   
 
     private PlayerControls playerControls;
     private Vector2 movement;
@@ -27,9 +27,9 @@ public class PlayerController : MonoBehaviour
  
     private KnockBack knockBack;
     public bool FacingLeft { get { return facingLeft; } }
-    private void Awake()
+    protected override void Awake()
     {
-        Instance = this;
+
         rb = GetComponent<Rigidbody2D>();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -45,8 +45,9 @@ public class PlayerController : MonoBehaviour
     //dash and cooldown of dash
     private void Dash()
     {
-        if (!isDashing)
+        if (!isDashing && Stamina.Instance.currentStamina > 0)
         {
+            Stamina.Instance.UseStamina();
             isDashing = true;
             movementSpeed *= dashSpeed;
             trailRenderer.emitting = true;
@@ -78,6 +79,10 @@ public class PlayerController : MonoBehaviour
         playerControls.Enable();
     }
 
+    private void OnDisable()
+    {
+        playerControls.Disable();
+    }
     private void Update()
     {
         PlayerInput();
@@ -94,7 +99,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (knockBack.isKnockBack) return;
+        if (knockBack.isKnockBack || PlayerHealth.Instance.isDead) return;
         rb.MovePosition(rb.position + movement * (movementSpeed * Time.deltaTime));
     }
 
