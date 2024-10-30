@@ -17,7 +17,7 @@ public class ShootEnemy : EnemyBase
     {
         base.Start();
         fireRateTimer = fireRate;
-        typeEnemy = typeOfEnemy.ShootEnemy;
+        typeEnemy = typeOfEnemy.rangeEnemy;
         if (Target!)
         {
             GetTarget();

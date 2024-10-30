@@ -7,7 +7,7 @@ public class FollowEnemy : EnemyBase
     protected override void Start()
     {
         base.Start();
-        typeEnemy = typeOfEnemy.FollowEnemy;
+        typeEnemy = typeOfEnemy.chasingEnemy;
     }
 
     private void Update()

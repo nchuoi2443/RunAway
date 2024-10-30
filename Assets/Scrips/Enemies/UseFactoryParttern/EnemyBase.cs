@@ -5,8 +5,8 @@ using static UnityEngine.GraphicsBuffer;
 
 public enum typeOfEnemy
 {
-    ChasingEnemy,
-    FollowEnemy,
+    chasingEnemy,
+    rangeEnemy,
     ShootEnemy
 }
 public abstract class EnemyBase : MonoBehaviour, IEnemy
