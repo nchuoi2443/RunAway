@@ -27,6 +27,8 @@ public class EnemyHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             Instantiate(deadVFXFrefab, transform.position, quaternion.identity);
+            /*if (TypeOfEnemy == "chasingEnemy") LevelManager.manager.updateScore(1);
+            else if (TypeOfEnemy == "rangeEnemy") LevelManager.manager.updateScore(3);*/
             //Destroy(deadVFX, 1f);
             Die();
         }

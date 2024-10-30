@@ -14,8 +14,10 @@ public class RangeEnemy : Enemy
     private float fireRateTimer;
     [SerializeField] private Transform firePos;
     private bool canAttack;
-    private void Awake()
+
+    protected override void Start()
     {
+        base.Start();
         fireRateTimer = fireRate;
         TypeOfEnemy = "rangeEnemy";
         if (Target!)
@@ -23,6 +25,7 @@ public class RangeEnemy : Enemy
             getTarget();
         }
     }
+
     private void Update()
     {
         

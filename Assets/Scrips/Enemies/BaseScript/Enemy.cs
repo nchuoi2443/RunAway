@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
         get { return rb; }
         set { rb = value; }
     }
-    public virtual void Start()
+    protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         enemyAnimator = GetComponent<Animator>();

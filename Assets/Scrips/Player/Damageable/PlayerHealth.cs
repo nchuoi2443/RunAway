@@ -43,6 +43,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
             Destroy(ActiveWeapon.Instance.gameObject);
             currentHealth = 0;
             GetComponent<Animator>().SetTrigger(DEATH_HASH);
+            
             Debug.Log("Player died");
             StartCoroutine(DelayedGameOver());
 

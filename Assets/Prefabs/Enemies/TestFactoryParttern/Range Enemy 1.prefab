@@ -126,14 +126,14 @@ GameObject:
   - component: {fileID: 1725682497376141600}
   - component: {fileID: 4046133373986683166}
   - component: {fileID: 5187971576513795767}
-  - component: {fileID: 3114539532685193873}
   - component: {fileID: 5619788251652015503}
   - component: {fileID: 8610743069262397802}
   - component: {fileID: 7890487624922420572}
   - component: {fileID: 1010659668761630377}
   - component: {fileID: 1217024935259103613}
+  - component: {fileID: -5436623589132591298}
   m_Layer: 11
-  m_Name: Range Enemy
+  m_Name: Range Enemy 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -235,24 +235,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &3114539532685193873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6106583928349248037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 034b67d54f66fb84da7453f33c19c7eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 1768385641793302015, guid: 93bc524c92702c846a86d56a5f4eb94d, type: 3}
-  speed: 3
-  bulletPrefab: {fileID: 7613065585970254839, guid: 1f37e0577226aef4ea062dc77e9bfd6b, type: 3}
-  attackRange: 5.5
-  fireRate: 1.36
-  firePos: {fileID: 6606421507672943672}
 --- !u!95 &5619788251652015503
 Animator:
   serializedVersion: 5
@@ -360,3 +342,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitMaterial: {fileID: 2100000, guid: 1d1febb8b8da84e4faa6c7c59cf9f65e, type: 2}
   resetMaterialTime: 0.2
+--- !u!114 &-5436623589132591298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6106583928349248037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 699a74119f8ba3248af95cd080eb45d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeEnemy: 0
+  target: {fileID: 1768385641793302015, guid: 93bc524c92702c846a86d56a5f4eb94d, type: 3}
+  speed: 3
+  bulletPrefab: {fileID: 7613065585970254839, guid: 1f37e0577226aef4ea062dc77e9bfd6b, type: 3}
+  attackRange: 5
+  fireRate: 1.5
+  firePos: {fileID: 6606421507672943672}
