@@ -16,16 +16,17 @@ public class EnemyHealth : MonoBehaviour
     private string typeOfEnemy;
     private EnemyBase baseEnemy;
 
+
     private void Awake()
     {
         currentHealth = maxHealth;
         knockBack = GetComponent<KnockBack>();
         getHit = GetComponent<GetHit>();
         baseEnemy = GetComponent<EnemyBase>();
+
         if (baseEnemy != null)
         {
             typeOfEnemy = baseEnemy.typeEnemy.ToString();
-            Debug.Log(typeOfEnemy);
         }
     }
 
@@ -38,9 +39,19 @@ public class EnemyHealth : MonoBehaviour
         {
             Instantiate(deadVFXFrefab, transform.position, quaternion.identity);
 
-            if (typeOfEnemy == "chasingEnemy") LevelManager.Instance.updateScore(1);
-            else if (typeOfEnemy == "rangeEnemy") LevelManager.Instance.updateScore(3);
+            if (typeOfEnemy == "chasingEnemy")
+            {
+                LevelManager.Instance.updateScore(1);
+                //GetComponent<PickUpSpawner>().SpawnPickUp();
+            }
+            else if (typeOfEnemy == "rangeEnemy")
+            {
+                LevelManager.Instance.updateScore(3);
+                /*GetComponent<PickUpSpawner>().SpawnPickUp();
+                GetComponent<PickUpSpawner>().SpawnPickUp();*/
+            }
             //Destroy(deadVFX, 1f);
+            
             Die();
         }
     }

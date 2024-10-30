@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4904749834064681228}
   - component: {fileID: 484624115812970828}
   - component: {fileID: 66644239838881688}
+  - component: {fileID: -679272319987435778}
   m_Layer: 8
   m_Name: 3box1
   m_TagString: Untagged
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: ebd3046f319213b4cb880b4133d0bab7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -153,3 +154,16 @@ PolygonCollider2D:
       - {x: 0.7611493, y: 0.14172411}
       - {x: 0.32604146, y: 0.14014208}
   m_UseDelaunayMesh: 0
+--- !u!114 &-679272319987435778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127563769234733210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c1163b032c1d043b14bf5b83824de3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickUpPrefab: {fileID: 1851388445492780806, guid: 0138061bc3d7c8e47a8d52dd4ceb19bc, type: 3}

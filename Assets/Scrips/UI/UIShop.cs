@@ -17,7 +17,7 @@ public class UIShop : MonoBehaviour
         container = transform.Find("Container");
         shopItemTemplate = container.Find("ShopItemTemplate");
 
-        shopItemTemplate.gameObject.SetActive(false);
+        shopItemTemplate.gameObject.SetActive(true);
 
         /*inventoryContainer = transform.Find("InventoryContainer");
         inventoryItemTemplate = inventoryContainer.Find("InventoryItemTemplate");*/

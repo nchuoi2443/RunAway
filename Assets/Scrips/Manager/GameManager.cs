@@ -7,7 +7,7 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private EnemyFactory enemyFactory;
     private float timeBetweenSpawn = 5f;
-    public List<EnemyBase> enemies = new List<EnemyBase>();
+    //public List<EnemyBase> enemies = new List<EnemyBase>();
 
     [SerializeField] private List<Transform> spawnPositions = new List<Transform>();
     private void Start()
@@ -28,7 +28,6 @@ public class GameManager : Singleton<GameManager>
         {
             //Vector3 spawnPosition = new Vector3(i * 2, 0, 0); // Tạo vị trí xuất hiện cho kẻ địch
             enemyFactory.CreateEnemy("chasingEnemy", GetRandomSpawnPosition().position);
-            enemies.Add(enemyFactory.CreateEnemy("chasingEnemy", GetRandomSpawnPosition().position).GetComponent<EnemyBase>());
             yield return new WaitForSeconds(timeBetweenSpawn);
         }
 
@@ -37,7 +36,6 @@ public class GameManager : Singleton<GameManager>
         {
             //Vector3 spawnPosition = new Vector3(i * 2 + 5, 0, 0); // Vị trí khác cho kẻ địch, có thể nâng cấp lên, tạo một list chứa các vị trí khác nhau rồi random để tạo vị trí xuất hiện ngẫu nhiên
             enemyFactory.CreateEnemy("rangeEnemy", GetRandomSpawnPosition().position);
-            enemies.Add(enemyFactory.CreateEnemy("rangeEnemy", GetRandomSpawnPosition().position).GetComponent<EnemyBase>()); // get component EnemyBase
             yield return new WaitForSeconds(timeBetweenSpawn);
         }
     }

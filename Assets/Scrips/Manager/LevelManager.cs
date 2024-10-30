@@ -61,7 +61,6 @@ public class LevelManager : Singleton<LevelManager>
     public void updateScore(int mount)
     {
         score += mount;
-        Debug.Log("Score: " + score);
     }
 }
 
