@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Sword : MonoBehaviour
+public class Sword : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject slashPrefab;
     [SerializeField] private Transform slashPosSpawn;
@@ -13,12 +13,8 @@ public class Sword : MonoBehaviour
     [SerializeField] private float swordAttackCD = 0.5f;
 
     private Animator animator;
-    private PlayerControls playerControls;
     private PlayerController playerController;
-    private ActiveWeapon activeWeapon;
-    private bool attackButtonPressed, isAttacking = false;
-    //private Collider2D swordCollider;
-
+    private ActiveWeapon activeWeapon;  
 
     private GameObject slashAnim;
     private void Awake()
@@ -28,56 +24,28 @@ public class Sword : MonoBehaviour
         activeWeapon = GetComponentInParent<ActiveWeapon>();
         //swordCollider = GetComponentInParent<Collider2D>();
     }
-    private void Start()
-    {
-        playerControls.Combat.Attack.started += _ => StartAttacking();
-        playerControls.Combat.Attack.canceled += _ => StopAttacking();
-    }
+ 
 
     private void Update()
     {
         followingOffSet();
-        Attack();
     }
 
-    private void StartAttacking()
-    {
-        attackButtonPressed = true;
-    }
 
-    private void StopAttacking()
+    public void Attack()
     {
-        attackButtonPressed = false;
-    }
+        animator.SetTrigger("Slash");
+        weaponCollider.gameObject.SetActive(true);
 
-    private void OnEnable()
-    {
-        if (playerControls == null)
-        {
-            playerControls = new PlayerControls();
-        }
-        playerControls.Enable();
-    }
-
-   
-    private void Attack()
-    {
-        if (attackButtonPressed && !isAttacking)
-        {
-            isAttacking = true;
-            animator.SetTrigger("Slash");
-            weaponCollider.gameObject.SetActive(true);
-
-            slashAnim = Instantiate(slashPrefab, slashPosSpawn.position, Quaternion.identity);
-            slashAnim.transform.parent = this.transform.parent;
-            StartCoroutine(AttackCDCoroutine());
-        }
+        slashAnim = Instantiate(slashPrefab, slashPosSpawn.position, Quaternion.identity);
+        slashAnim.transform.parent = this.transform.parent;
+        StartCoroutine(AttackCDCoroutine());
     }
 
     private IEnumerator AttackCDCoroutine()
     {
         yield return new WaitForSeconds(swordAttackCD);
-        isAttacking = false;
+        ActiveWeapon.Instance.ToggleIsAttacking(false);
     }
 
     public void doneAttackAnim()
@@ -136,4 +104,6 @@ public class Sword : MonoBehaviour
             Debug.Log("Killed enemy");
         }
     }
+
+    
 }
