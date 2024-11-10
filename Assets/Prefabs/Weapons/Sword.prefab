@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5057307766386451427}
   - component: {fileID: 7009606789980710168}
-  - component: {fileID: 1491765848716439212}
   - component: {fileID: 7229403067569703422}
+  - component: {fileID: -1327916192018638707}
   m_Layer: 10
   m_Name: Sword
   m_TagString: Untagged
@@ -87,7 +87,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &1491765848716439212
+--- !u!114 &7229403067569703422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798008762437983151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bada6de1c21c58641a49e324002e1bb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slashPrefab: {fileID: 4363918213324290491, guid: faa5748a09d71834a8310a22b98f48d9, type: 3}
+  slashPosSpawn: {fileID: 5950885407596374634}
+  weaponCollider: {fileID: 0}
+  swordAttackCD: 0.5
+--- !u!95 &-1327916192018638707
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -108,22 +124,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7229403067569703422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1798008762437983151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bada6de1c21c58641a49e324002e1bb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slashPrefab: {fileID: 4363918213324290491, guid: faa5748a09d71834a8310a22b98f48d9, type: 3}
-  slashPosSpawn: {fileID: 5950885407596374634}
-  weaponCollider: {fileID: 0}
-  swordAttackCD: 0.5
 --- !u!1 &9127807496948532729
 GameObject:
   m_ObjectHideFlags: 0

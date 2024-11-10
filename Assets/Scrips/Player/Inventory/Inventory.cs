@@ -43,12 +43,13 @@ public class Inventory : MonoBehaviour
 
     private void ChangeInventoryItem()
     {
+        Debug.Log(transform.GetChild(activeItemIndex).GetComponent<InventorySlot>().GetWeaponInfo().weaponPrefab.name);
         if (ActiveWeapon.Instance.GetCurrentWeapon != null)
         {
             Destroy(ActiveWeapon.Instance.GetCurrentWeapon.gameObject);
         }
 
-        if (transform.GetChild(activeItemIndex).GetComponentInChildren<InventorySlot>())
+        if (!transform.GetChild(activeItemIndex).GetComponentInChildren<InventorySlot>())
         {
             ActiveWeapon.Instance.WeaponNull();
             return;
@@ -57,8 +58,9 @@ public class Inventory : MonoBehaviour
         GameObject weaponToSpawn = transform.GetChild(activeItemIndex).
             GetComponentInChildren<InventorySlot>().GetWeaponInfo().weaponPrefab;
         GameObject newWeapon = Instantiate(weaponToSpawn, ActiveWeapon.Instance.transform.position, Quaternion.identity);
+        ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0,0, 0);
         newWeapon.transform.parent = ActiveWeapon.Instance.transform;
-
-        ActiveWeapon.Instance.NewWeapon(newWeapon.GetComponent<MonoBehaviour>());
+        Debug.Log("New Weapon: " + newWeapon.name);
+        ActiveWeapon.Instance.NewWeapon(newWeapon.GetComponent<MonoBehaviour>()); 
     }
 }

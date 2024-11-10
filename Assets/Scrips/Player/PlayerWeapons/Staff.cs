@@ -4,9 +4,31 @@ using UnityEngine;
 
 public class Staff : MonoBehaviour, IWeapon
 {
+
+    private void Update()
+    {
+        MouseFollowingOffset();
+    }
     public void Attack()
     {
         Debug.Log("Staff Attack");
         ActiveWeapon.Instance.ToggleIsAttacking(false);
+    }
+
+    private void MouseFollowingOffset()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        Vector3 playerScreenMouse = Camera.main.WorldToScreenPoint(PlayerController.Instance.transform.position);
+
+        float angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
+
+        if (mousePosition.x < playerScreenMouse.x)
+        {
+            ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, -180, angle);
+        }
+        else
+        {
+            ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
     }
 }

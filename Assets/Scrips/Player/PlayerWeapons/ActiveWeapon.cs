@@ -12,6 +12,7 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
     {
         base.Awake();
         playerControls = new PlayerControls();
+        transform.parent = PlayerController.Instance.transform;
     }
 
     private void OnEnable()
@@ -23,6 +24,7 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
     {
         playerControls.Combat.Attack.started += _ => StartAttack();
         playerControls.Combat.Attack.canceled += _ => StopAttack();
+        transform.position = PlayerController.Instance.transform.position;
 
     }
 

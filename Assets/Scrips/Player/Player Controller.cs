@@ -10,7 +10,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private float dashSpeed = 4f;
     [SerializeField] private TrailRenderer trailRenderer;
     [SerializeField] private float DashCD = 1f;
-   
+    [SerializeField] private Transform weaponCollider;
 
     private PlayerControls playerControls;
     private Vector2 movement;
@@ -27,6 +27,8 @@ public class PlayerController : Singleton<PlayerController>
  
     private KnockBack knockBack;
     public bool FacingLeft { get { return facingLeft; } }
+
+    public Transform GetWeaponCollider { get { return weaponCollider; } }
     protected override void Awake()
     {
 
