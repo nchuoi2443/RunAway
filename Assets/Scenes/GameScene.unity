@@ -288,37 +288,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11494772}
   m_CullTransparentMesh: 1
---- !u!1 &15215407
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 15215408}
-  m_Layer: 0
-  m_Name: Enemies
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &15215408
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 15215407}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.113422334, y: 1.7480879, z: -0.07408601}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &18020529
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3300,7 +3269,6 @@ GameObject:
   - component: {fileID: 524775008}
   - component: {fileID: 524775010}
   - component: {fileID: 524775009}
-  - component: {fileID: 524775011}
   m_Layer: 5
   m_Name: InventoryItem (4)
   m_TagString: Untagged
@@ -3367,19 +3335,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 524775007}
   m_CullTransparentMesh: 1
---- !u!114 &524775011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 524775007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d9189d1c22e47842b9e68ddeef767d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponInfo: {fileID: 0}
 --- !u!4 &543617202 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8851816676065264666, guid: 93a9741fab236694991542e299e73c29, type: 3}
@@ -3796,7 +3751,6 @@ GameObject:
   - component: {fileID: 623730847}
   - component: {fileID: 623730849}
   - component: {fileID: 623730848}
-  - component: {fileID: 623730850}
   m_Layer: 5
   m_Name: InventoryItem (5)
   m_TagString: Untagged
@@ -3863,19 +3817,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 623730846}
   m_CullTransparentMesh: 1
---- !u!114 &623730850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 623730846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d9189d1c22e47842b9e68ddeef767d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponInfo: {fileID: 0}
 --- !u!1 &625009545
 GameObject:
   m_ObjectHideFlags: 0
@@ -141419,7 +141360,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1450500316}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0304a5b857224a94b8e19de6f35167ac, type: 3}
   m_Name: 
@@ -143403,7 +143344,6 @@ GameObject:
   - component: {fileID: 1947409634}
   - component: {fileID: 1947409636}
   - component: {fileID: 1947409635}
-  - component: {fileID: 1947409637}
   m_Layer: 5
   m_Name: InventoryItem (3)
   m_TagString: Untagged
@@ -143470,19 +143410,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1947409633}
   m_CullTransparentMesh: 1
---- !u!114 &1947409637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1947409633}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d9189d1c22e47842b9e68ddeef767d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponInfo: {fileID: 0}
 --- !u!1 &1969678975
 GameObject:
   m_ObjectHideFlags: 0
@@ -145545,6 +145472,5 @@ SceneRoots:
   - {fileID: 1609541428}
   - {fileID: 406356105}
   - {fileID: 7458469603336722545}
-  - {fileID: 15215408}
   - {fileID: 51611150}
   - {fileID: 933336884}

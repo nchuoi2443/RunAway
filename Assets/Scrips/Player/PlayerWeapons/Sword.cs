@@ -20,33 +20,43 @@ public class Sword : MonoBehaviour, IWeapon
     {
         animator = GetComponent<Animator>();
         //swordCollider = GetComponentInParent<Collider2D>();
+        slashPosSpawn = GameObject.Find("SlashSpawnPoint").transform;
     }
 
     private void Start()
     {
         weaponCollider = PlayerController.Instance.GetWeaponCollider;
-        slashPosSpawn = GameObject.Find("SlashSpawnPoint").transform;
     }
 
     private void Update()
     {
         followingOffSet();
+        if (slashPosSpawn == null)
+        {
+            slashPosSpawn = GameObject.Find("SlashSpawnPoint").transform;
+        }
     }
 
 
     public void Attack()
     {
+        Debug.Log("Sword attack");
         animator.SetTrigger("Slash");
         weaponCollider.gameObject.SetActive(true);
 
         slashAnim = Instantiate(slashPrefab, slashPosSpawn.position, Quaternion.identity);
         slashAnim.transform.parent = this.transform.parent;
         StartCoroutine(AttackCDCoroutine());
+        /*if (ActiveWeapon.Instance.IsAttacking)
+        {
+            ActiveWeapon.Instance.ToggleIsAttacking(false);
+        }*/
     }
 
     private IEnumerator AttackCDCoroutine()
     {
         yield return new WaitForSeconds(swordAttackCD);
+        //bug here, sau khi đổi vũ khí, auto cái isAttacking = true? wtf
         ActiveWeapon.Instance.ToggleIsAttacking(false);
     }
 
