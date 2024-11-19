@@ -10,12 +10,16 @@ public class Sword : MonoBehaviour, IWeapon
     [SerializeField] private GameObject slashPrefab;
     [SerializeField] private Transform slashPosSpawn;
     [SerializeField] private float swordAttackCD = 0.5f;
+    [SerializeField] private WeaponInfo weaponInfo;
 
     private Transform weaponCollider;
     private Animator animator;
 
-
     private GameObject slashAnim;
+    public WeaponInfo GetWeaponInfo()
+    {
+        return weaponInfo;
+    }
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -40,24 +44,11 @@ public class Sword : MonoBehaviour, IWeapon
 
     public void Attack()
     {
-        Debug.Log("Sword attack");
         animator.SetTrigger("Slash");
         weaponCollider.gameObject.SetActive(true);
 
         slashAnim = Instantiate(slashPrefab, slashPosSpawn.position, Quaternion.identity);
         slashAnim.transform.parent = this.transform.parent;
-        StartCoroutine(AttackCDCoroutine());
-        /*if (ActiveWeapon.Instance.IsAttacking)
-        {
-            ActiveWeapon.Instance.ToggleIsAttacking(false);
-        }*/
-    }
-
-    private IEnumerator AttackCDCoroutine()
-    {
-        yield return new WaitForSeconds(swordAttackCD);
-        //bug here, sau khi đổi vũ khí, auto cái isAttacking = true? wtf
-        ActiveWeapon.Instance.ToggleIsAttacking(false);
     }
 
     public void doneAttackAnim()

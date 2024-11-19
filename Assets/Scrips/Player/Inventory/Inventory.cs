@@ -26,7 +26,6 @@ public class Inventory : Singleton<Inventory>
         playerControls.Enable();
     }
 
-
     private void ToggleActiveSlot(int numValue)
     {
         ToggleActiveHighlight(numValue - 1);

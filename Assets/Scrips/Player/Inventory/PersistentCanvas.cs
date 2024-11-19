@@ -2,20 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PersistentCanvas : MonoBehaviour
+public class PersistentCanvas : Singleton<PersistentCanvas>
 {
-    private static PersistentCanvas instance;
-
-    private void Awake()
+    protected override void Awake()
     {
-        // Kiểm tra nếu đã tồn tại một Canvas
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        instance = this; 
         DontDestroyOnLoad(gameObject);
     }
 }

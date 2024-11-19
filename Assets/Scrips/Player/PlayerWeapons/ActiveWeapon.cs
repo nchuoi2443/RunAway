@@ -8,6 +8,9 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
 
     private PlayerControls playerControls;
     private bool attackButtonPressed, isAttacking = false;
+
+    private float timeBetweenattacks;
+
     //getter for isAttacking
     public bool IsAttacking { get => isAttacking; }
     protected override void Awake()
@@ -22,6 +25,8 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
         playerControls.Combat.Enable();
         playerControls.Combat.Attack.started += _ => StartAttack();
         playerControls.Combat.Attack.canceled += _ => StopAttack();
+
+        
     }
 
     private void Start()
@@ -29,7 +34,7 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
         
         // set pos cho weapon cho player
         transform.position = PlayerController.Instance.transform.position;
-
+        AttackCooldown();
     }
 
     private void Update()
@@ -38,9 +43,17 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
        
     }
 
-    public void ToggleIsAttacking(bool value)
+    private void AttackCooldown()
     {
-        isAttacking = value;
+        isAttacking = true;
+        StopAllCoroutines();
+        StartCoroutine(AttackCooldownRoutine());
+    }
+
+    private IEnumerator AttackCooldownRoutine()
+    {
+        yield return new WaitForSeconds(timeBetweenattacks);
+        isAttacking = false;
     }
 
     private void StartAttack()
@@ -55,13 +68,10 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
 
     private void Attack()
     {
-        Debug.Log(isAttacking);
-        Debug.Log("attackbuttonpressed: " +  attackButtonPressed);
         if (attackButtonPressed && !isAttacking && !Inventory.Instance.IsInventoryNull)
         {
-            isAttacking = true;
+            AttackCooldown();
             (GetCurrentWeapon as IWeapon).Attack();
-            Debug.Log("is attacking");
         }
     }
 
@@ -70,6 +80,8 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
         GetCurrentWeapon = newWeapon;
 
         isAttacking = false;
+        AttackCooldown();
+        timeBetweenattacks = (GetCurrentWeapon as IWeapon).GetWeaponInfo().weaponCooldown;
     }
 
     public void WeaponNull()

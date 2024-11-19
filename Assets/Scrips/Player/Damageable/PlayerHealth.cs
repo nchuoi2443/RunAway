@@ -79,7 +79,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
     {
         yield return new WaitForSeconds(2f); // Wait for 2 seconds
         LevelManager.Instance.GameOver();
-        LevelManager.Instance.GameOver();
+        
     }
 
     private void Die()

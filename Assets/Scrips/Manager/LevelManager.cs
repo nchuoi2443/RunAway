@@ -14,6 +14,7 @@ public class LevelManager : Singleton<LevelManager>
     private int score = 0;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI highScoreText;
+
     public int Score
     {
         get {  return score; }
@@ -30,6 +31,7 @@ public class LevelManager : Singleton<LevelManager>
     public void GameOver()
     {
         deathScreen.SetActive(true);
+        Inventory.Instance.gameObject.SetActive(false);
         scoreText.text = "Score: " + Score.ToString();
 
         string loadedData = HighScore.Load("save");
@@ -51,9 +53,10 @@ public class LevelManager : Singleton<LevelManager>
 
     public void ReplayGame()
     {
-
+        Inventory.Instance.gameObject.SetActive(true);
         // Load lại scene hiện tại
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
     }
 
     public void BackToMainMenu(string name) { SceneManager.LoadScene(name); }

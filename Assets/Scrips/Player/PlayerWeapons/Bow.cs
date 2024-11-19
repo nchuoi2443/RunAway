@@ -4,6 +4,22 @@ using UnityEngine;
 
 public class Bow : MonoBehaviour, IWeapon
 {
+    [SerializeField] private GameObject arrowPrefab;
+    [SerializeField] private WeaponInfo weaponInfo;
+    [SerializeField] private Transform arrowSpawnPoint;
+
+    private int FIRE_HASH = Animator.StringToHash("Fire");
+
+    private Animator animator;
+    public WeaponInfo GetWeaponInfo()
+    {
+        return weaponInfo;
+    }
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     private void Update()
     {
         FaceMouse();
@@ -11,8 +27,8 @@ public class Bow : MonoBehaviour, IWeapon
 
     public void Attack()
     {
-        Debug.Log("Bow Attack");
-        ActiveWeapon.Instance.ToggleIsAttacking(false);
+        animator.SetTrigger(FIRE_HASH);
+        GameObject newArrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, ActiveWeapon.Instance.transform.rotation);
     }
 
     public void FaceMouse()
@@ -25,4 +41,6 @@ public class Bow : MonoBehaviour, IWeapon
         ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, 0, angle);
 
     }
+
+    
 }
