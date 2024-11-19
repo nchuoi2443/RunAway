@@ -29,6 +29,7 @@ public class Bow : MonoBehaviour, IWeapon
     {
         animator.SetTrigger(FIRE_HASH);
         GameObject newArrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, ActiveWeapon.Instance.transform.rotation);
+        newArrow.GetComponent<ProjectTile>().UpdateWeaponInfo(weaponInfo);
     }
 
     public void FaceMouse()

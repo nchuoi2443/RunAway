@@ -9,7 +9,7 @@ public class Sword : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject slashPrefab;
     [SerializeField] private Transform slashPosSpawn;
-    [SerializeField] private float swordAttackCD = 0.5f;
+
     [SerializeField] private WeaponInfo weaponInfo;
 
     private Transform weaponCollider;

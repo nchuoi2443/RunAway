@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 9210643095704914230}
   - component: {fileID: 1287884365202206678}
   - component: {fileID: 6533549588364462630}
+  - component: {fileID: -6186125586243432676}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Untagged
@@ -113,7 +114,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!70 &9210643095704914230
 CapsuleCollider2D:
@@ -276,3 +277,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 22
+  particleOnHitPrefabVFX: {fileID: 8693243459381742181, guid: 39b80073c641a9045bc6ebf148f2c6c4, type: 3}
+--- !u!114 &-6186125586243432676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8934330566271701347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 867b1045491d7f6449313e361ef88af9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
