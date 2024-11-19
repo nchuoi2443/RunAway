@@ -6,12 +6,21 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private EnemyFactory enemyFactory;
-    private float timeBetweenSpawn = 5f;
+    [SerializeField] private float timeBetweenSpawn = 5f;
     //public List<EnemyBase> enemies = new List<EnemyBase>();
 
     [SerializeField] private List<Transform> spawnPositions = new List<Transform>();
+
+    private int chasingEnemyNum;
+    private int rangeEnemyNum;
+
+    private List<EnemyBase> enemies = new List<EnemyBase>();
+
+    public List<EnemyBase> Enemies { get { return enemies; } set { enemies = value; } }
     private void Start()
     {
+        chasingEnemyNum = 3;
+        rangeEnemyNum = 2;
         StartCoroutine(SpawnEnemies());
     }
 
@@ -24,19 +33,39 @@ public class GameManager : Singleton<GameManager>
     public IEnumerator SpawnEnemies()
     {
         // Tạo 3 kẻ địch loại Chasing
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < chasingEnemyNum; i++)
         {
-            //Vector3 spawnPosition = new Vector3(i * 2, 0, 0); // Tạo vị trí xuất hiện cho kẻ địch
-            enemyFactory.CreateEnemy("chasingEnemy", GetRandomSpawnPosition().position);
+            //enemies.Add(enemyFactory.CreateEnemy("chasingEnemy", GetRandomSpawnPosition().position).GetComponent<FollowEnemy>());
+            SpawnEnemy("chasingEnemy", GetRandomSpawnPosition().position);
             yield return new WaitForSeconds(timeBetweenSpawn);
         }
 
         // Tạo 2 kẻ địch loại Range
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < rangeEnemyNum; i++)
         {
-            //Vector3 spawnPosition = new Vector3(i * 2 + 5, 0, 0); // Vị trí khác cho kẻ địch, có thể nâng cấp lên, tạo một list chứa các vị trí khác nhau rồi random để tạo vị trí xuất hiện ngẫu nhiên
-            enemyFactory.CreateEnemy("rangeEnemy", GetRandomSpawnPosition().position);
+            //enemies.Add(enemyFactory.CreateEnemy("rangeEnemy", GetRandomSpawnPosition().position).GetComponent<ShootEnemy>());
+            SpawnEnemy("rangeEnemy", GetRandomSpawnPosition().position);
             yield return new WaitForSeconds(timeBetweenSpawn);
         }
+    }
+
+    public void RemoveEnemy(EnemyBase enemy)
+    {
+        enemies.Remove(enemy);
+    }
+
+    public void RemoveAllEnemies()
+    {
+        if (enemies.Count == 0) return;
+        foreach (var enemy in enemies)
+        {
+            Destroy(enemy.gameObject);
+        }
+        enemies.Clear();
+    }
+
+    public void SpawnEnemy(string type, Vector3 spawnPosition)
+    {
+        enemies.Add(enemyFactory.CreateEnemy(type, spawnPosition).GetComponent<EnemyBase>());
     }
 }
