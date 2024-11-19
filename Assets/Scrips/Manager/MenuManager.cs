@@ -7,6 +7,7 @@ public class MenuManager : Singleton<MenuManager>
     public void changeScene(string name)
     {
         SceneManager.LoadScene(name);
+        Time.timeScale = 1;
     }
 
 }

@@ -1,34 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.PlasticSCM.Editor.WebApi;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private float spawnerTime = 5f;
+    private int wayCounter;
+    private float wayTimerDefault;
+    private float currentWayTimer;
 
-    [SerializeField] private GameObject[] enemyPrefabs;
-    [SerializeField] private bool canSpawn = true;
-    private void Start()
+    private TMP_Text wayText;
+    private TMP_Text currentWayText;
+
+    private void Awake()
     {
-        StartCoroutine(Spawner());
+        wayCounter = 1;
+        wayTimerDefault = 20f;
+        currentWayTimer = wayTimerDefault;
+        wayText = GameObject.Find("WayCounter").GetComponent<TMP_Text>();
+        currentWayText = GameObject.Find("CurrentWay").GetComponent<TMP_Text>();
+
     }
 
- 
-
-    private IEnumerator Spawner()
+    private void Update()
     {
-        WaitForSeconds wait = new WaitForSeconds(spawnerTime);
-
-        while (canSpawn)
+        currentWayTimer -= Time.deltaTime;
+        if (currentWayTimer <= 0)
         {
-            yield return wait;
-
-            //spawn enemy
-            int rand = Random.Range(0, enemyPrefabs.Length);
-            GameObject enemyToSpawn = enemyPrefabs[rand];
-            Instantiate(enemyToSpawn, transform.position, Quaternion.identity);
-
+            currentWayTimer = wayTimerDefault;
+            wayCounter++;
         }
+        wayText.text = "Way:" + wayCounter.ToString();
+        currentWayText.text = "Time left:" + currentWayTimer.ToString("F0");
     }
 }

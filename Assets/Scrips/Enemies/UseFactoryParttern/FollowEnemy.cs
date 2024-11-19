@@ -16,19 +16,11 @@ public class FollowEnemy : EnemyBase
         {
             GetTarget();
         }
-        if (Target == null)
-        {
-            Debug.Log("we got nothing");
-        }
-        else
-        {
-            //rotateTowardTarget();
-        }
     }
 
     public void FixedUpdate()
     {
-        if (IsBocked)
+        if (IsBocked || PlayerHealth.Instance.isDead)
         {
             return;
         }

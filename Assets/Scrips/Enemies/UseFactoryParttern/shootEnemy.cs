@@ -32,7 +32,7 @@ public class ShootEnemy : EnemyBase
 
     public void FixedUpdate()
     {
-        if (IsBocked)
+        if (IsBocked || PlayerHealth.Instance.isDead)
         {
             return;
         }

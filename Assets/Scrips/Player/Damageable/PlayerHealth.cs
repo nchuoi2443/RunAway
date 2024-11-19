@@ -46,7 +46,6 @@ public class PlayerHealth : Singleton<PlayerHealth>
             
             Debug.Log("Player died");
             StartCoroutine(DelayedGameOver());
-
             //Die();
 
         }
