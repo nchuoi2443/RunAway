@@ -51,9 +51,9 @@ public class LevelManager : Singleton<LevelManager>
 
     public void ReplayGame()
     {
-        Debug.Log("I'm got calling");
-        //recall the scene and reload everything in scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        // Load lại scene hiện tại
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void BackToMainMenu(string name) { SceneManager.LoadScene(name); }

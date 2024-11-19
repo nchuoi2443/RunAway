@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,16 +7,17 @@ public class Inventory : Singleton<Inventory>
     private int activeItemIndex = 0;
    
     private PlayerControls playerControls;
-
     public bool IsInventoryNull { set; get; }
     protected override void Awake()
     {
+     
         playerControls = new PlayerControls();
         ToggleActiveHighlight(0);
     }
 
     private void Start()
     {
+
         playerControls.Inventory.Keyboard.performed += ctx => ToggleActiveSlot((int)ctx.ReadValue<float>());
     }
 
@@ -24,6 +25,7 @@ public class Inventory : Singleton<Inventory>
     {
         playerControls.Enable();
     }
+
 
     private void ToggleActiveSlot(int numValue)
     {
