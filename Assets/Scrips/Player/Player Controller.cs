@@ -27,7 +27,7 @@ public class PlayerController : Singleton<PlayerController>
  
     private KnockBack knockBack;
     public bool FacingLeft { get { return facingLeft; } }
-
+    public bool IsDashing { get { return isDashing; } }
     public Transform GetWeaponCollider { get { return weaponCollider; } }
     protected override void Awake()
     {
@@ -69,6 +69,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void FixedUpdate()
     {
+        
         Move();
     }
 

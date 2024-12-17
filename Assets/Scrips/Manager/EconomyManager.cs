@@ -19,4 +19,7 @@ public class EconomyManager : Singleton<EconomyManager>
         }
         goldText.text = currentGold.ToString("D3");
     }
+
+    public int GetCurrentCoin() { return currentGold; }
+    public void SetCurrentCoin(int coin) { currentGold = coin; }
 }

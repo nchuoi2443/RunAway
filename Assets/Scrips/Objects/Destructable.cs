@@ -19,7 +19,7 @@ public class Destrucable : MonoBehaviour
     public void rateGenerateCoin()
     {
         int rate = Random.Range(0, 100);
-        if (rate < 70)
+        if (rate < 90)
         {
             GetComponent<PickUpSpawner>().SpawnPickUp(2);
         }

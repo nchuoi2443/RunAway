@@ -43,6 +43,9 @@ public class EnemySpawner : MonoBehaviour
         
 
         GameManager.Instance.RemoveAllEnemies();
+        ShopManager.Instance.gameObject.SetActive(true);
+        Time.timeScale = 0;
+        Inventory.Instance.gameObject.SetActive(false);
         StartCoroutine(BeforeNewWay());
 
         currentWayTimer = wayTimerDefault;
