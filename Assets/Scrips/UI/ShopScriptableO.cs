@@ -12,4 +12,5 @@ public class ShopScriptableO : ScriptableObject
     public Sprite itemImage;
     public int itemPrice;
     public bool isPurchased;
+    public StatsContainer itemStats;
 }

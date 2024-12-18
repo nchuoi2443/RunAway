@@ -11,18 +11,19 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField] private ShopScriptableO[] shopItems;
     [SerializeField] ShopTemplate[] shopTemplates;
     [SerializeField] Button[] buyButtons;
+    [SerializeField] TMP_Text[] playerStatsText;
+    private PlayerBaseStats playerBaseStats;
     private int[] randomIndex;
-    private bool isBuy;
-
-    public bool IsBuy { get {  return isBuy; } }
+    
     private void Start()
     {
         goldText.text = "Coins:" + EconomyManager.Instance.GetCurrentCoin().ToString("D3");
         gameObject.SetActive(false);
-        isBuy = false;
-        
+
+        playerBaseStats =  GetComponent<PlayerBaseStats>();
         goldText.color = Color.white;
         LoadPanels();
+        LoadPlayerStats();
         CheckPurchasable();
     }
 
@@ -50,6 +51,19 @@ public class ShopManager : Singleton<ShopManager>
         }
     }
 
+    public void LoadPlayerStats()
+    {
+        playerStatsText[0].text = "Max Health: " + playerBaseStats.MaxHealth;
+        playerStatsText[1].text = "Attack: " + playerBaseStats.BaseAtk;
+        playerStatsText[2].text = "Defense: " + playerBaseStats.BaseDef;
+        playerStatsText[3].text = "Speed: " + playerBaseStats.BaseSpeed;
+        playerStatsText[4].text = "Attack Speed: " + playerBaseStats.BaseAtkSpeed;
+        playerStatsText[5].text = "Crit Chance: " + playerBaseStats.BaseCrit;
+        playerStatsText[6].text = "Crit Damage: " + playerBaseStats.BaseCritDmg;
+        playerStatsText[8].text = "Life Steal: " + playerBaseStats.BaseLifeSteal;
+        playerStatsText[7].text = "Stamina: " + playerBaseStats.BaseStamina;
+    }
+
     private void CheckPurchasable()
     {
         for (int i = 0; i < 3; i++)
@@ -72,13 +86,27 @@ public class ShopManager : Singleton<ShopManager>
         {
 
             EconomyManager.Instance.SetCurrentCoin(currentCoin - shopItems[randomIndex[0]].itemPrice);
-            isBuy = true;
+
             //shopItems[randomIndex[0]].itemEffect.Invoke();
             LoadPanels();
         }
     }
 
-    private void RandomizeShopItems()
+    public void UpdatePlayerStats()
+    {
+        playerBaseStats.MaxHealth += shopItems[randomIndex[0]].itemStats.health;
+        playerBaseStats.BaseAtk += shopItems[randomIndex[0]].itemStats.atk;
+        playerBaseStats.BaseDef += shopItems[randomIndex[0]].itemStats.def;
+        playerBaseStats.BaseSpeed += shopItems[randomIndex[0]].itemStats.speed;
+        playerBaseStats.BaseAtkSpeed += shopItems[randomIndex[0]].itemStats.atkSpeed;
+        playerBaseStats.BaseCrit += shopItems[randomIndex[0]].itemStats.crit;
+        playerBaseStats.BaseCritDmg += shopItems[randomIndex[0]].itemStats.critDmg;
+        playerBaseStats.BaseLifeSteal += shopItems[randomIndex[0]].itemStats.lifeSteal;
+        playerBaseStats.BaseStamina += shopItems[randomIndex[0]].itemStats.stamina;
+        LoadPlayerStats();
+    }
+
+        private void RandomizeShopItems()
     {
         randomIndex = new int[shopItems.Length];
         for (int i = 0; i < 3; i++)
