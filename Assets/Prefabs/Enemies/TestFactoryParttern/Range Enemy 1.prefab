@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 1010659668761630377}
   - component: {fileID: 1217024935259103613}
   - component: {fileID: -5436623589132591298}
+  - component: {fileID: 401065709186053975}
   m_Layer: 11
   m_Name: Range Enemy 1
   m_TagString: Enemy
@@ -361,3 +362,16 @@ MonoBehaviour:
   attackRange: 5
   fireRate: 1.5
   firePos: {fileID: 6606421507672943672}
+--- !u!114 &401065709186053975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6106583928349248037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c1163b032c1d043b14bf5b83824de3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickUpPrefab: {fileID: 1851388445492780806, guid: 0138061bc3d7c8e47a8d52dd4ceb19bc, type: 3}

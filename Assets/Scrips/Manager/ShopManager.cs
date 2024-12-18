@@ -45,7 +45,7 @@ public class ShopManager : Singleton<ShopManager>
         {
             shopTemplates[i].itemNameTxt.text = shopItems[randomIndex[i]].itemName;
             shopTemplates[i].shortDescriptTxt.text = shopItems[randomIndex[i]].shortDescription;
-            shopTemplates[i].priceTxt.text = shopItems[randomIndex[i]].itemPrice.ToString("D3");
+            shopTemplates[i].priceTxt.text = "Cost: " + shopItems[randomIndex[i]].itemPrice.ToString("D3");
             shopTemplates[i].itemImage.sprite = shopItems[randomIndex[i]].itemImage;
         }
     }

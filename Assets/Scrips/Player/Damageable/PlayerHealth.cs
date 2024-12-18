@@ -7,18 +7,19 @@ public class PlayerHealth : Singleton<PlayerHealth>
 {
     public bool isDead { get; private set; }
 
-    [SerializeField] private int maxHealth = 10;
+    [SerializeField] private float maxHealth = 10;
     [SerializeField] private float knockBackThrust = 15f;
     [SerializeField] private float damageRecoveryTime = 1f;
 
     private Slider healthBar;
-    private int currentHealth;
+    private float currentHealth;
     private KnockBack knockBack;
     private GetHit getHit;
     private bool canTakeDamage = true;
 
-    private const string TOWN_TEXT = "scene1";
     const string DEATH_HASH = "Dead";
+
+    public float MaxHealth { get => maxHealth; }
     protected override void Awake()
     {
         currentHealth = maxHealth;

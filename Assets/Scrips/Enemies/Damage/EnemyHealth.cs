@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] private int maxHealth = 100;
+    [SerializeField] private float maxHealth = 100;
     [SerializeField] private GameObject deadVFXFrefab;
-    private int currentHealth;
+
+    private float currentHealth;
     private KnockBack knockBack;
     private float knockBackThrust = 15f;
     private GetHit getHit;
@@ -58,6 +59,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
+        GetComponent<PickUpSpawner>().SpawnPickUp(2);
         Destroy(gameObject);
         GameManager.Instance.RemoveEnemy(baseEnemy);
     }
