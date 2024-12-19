@@ -25,6 +25,12 @@ public class ShopManager : Singleton<ShopManager>
         LoadPanels();
         LoadPlayerStats();
         CheckPurchasable();
+
+        for (int i = 0; i < buyButtons.Length; i++)
+        {
+            int index = i; 
+            buyButtons[i].onClick.AddListener(() => UpdatePlayerStats(index));
+        }
     }
 
     private void Update()
@@ -92,21 +98,21 @@ public class ShopManager : Singleton<ShopManager>
         }
     }
 
-    public void UpdatePlayerStats()
+    public void UpdatePlayerStats(int index)
     {
-        playerBaseStats.MaxHealth += shopItems[randomIndex[0]].itemStats.health;
-        playerBaseStats.BaseAtk += shopItems[randomIndex[0]].itemStats.atk;
-        playerBaseStats.BaseDef += shopItems[randomIndex[0]].itemStats.def;
-        playerBaseStats.BaseSpeed += shopItems[randomIndex[0]].itemStats.speed;
-        playerBaseStats.BaseAtkSpeed += shopItems[randomIndex[0]].itemStats.atkSpeed;
-        playerBaseStats.BaseCrit += shopItems[randomIndex[0]].itemStats.crit;
-        playerBaseStats.BaseCritDmg += shopItems[randomIndex[0]].itemStats.critDmg;
-        playerBaseStats.BaseLifeSteal += shopItems[randomIndex[0]].itemStats.lifeSteal;
-        playerBaseStats.BaseStamina += shopItems[randomIndex[0]].itemStats.stamina;
+        playerBaseStats.MaxHealth += shopItems[randomIndex[index]].itemStats.health;
+        playerBaseStats.BaseAtk += shopItems[randomIndex[index]].itemStats.atk;
+        playerBaseStats.BaseDef += shopItems[randomIndex[index]].itemStats.def;
+        playerBaseStats.BaseSpeed += shopItems[randomIndex[index]].itemStats.speed;
+        playerBaseStats.BaseAtkSpeed += shopItems[randomIndex[index]].itemStats.atkSpeed;
+        playerBaseStats.BaseCrit += shopItems[randomIndex[index]].itemStats.crit;
+        playerBaseStats.BaseCritDmg += shopItems[randomIndex[index]].itemStats.critDmg;
+        playerBaseStats.BaseLifeSteal += shopItems[randomIndex[index]].itemStats.lifeSteal;
+        playerBaseStats.BaseStamina += shopItems[randomIndex[index]].itemStats.stamina;
         LoadPlayerStats();
     }
 
-        private void RandomizeShopItems()
+    private void RandomizeShopItems()
     {
         randomIndex = new int[shopItems.Length];
         for (int i = 0; i < 3; i++)
