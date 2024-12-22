@@ -14,6 +14,8 @@ public class PlayerBaseStats : MonoBehaviour
     private float baseLifeSteal;
     [Range(1, 3)]
     private int baseStamina;
+    private bool isCrit;
+    public bool IsCrit { get { return isCrit; } set { isCrit = value; } }
 
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
     public float BaseAtk { get => baseAtk; set => baseAtk = value; }
@@ -28,14 +30,29 @@ public class PlayerBaseStats : MonoBehaviour
     private void Awake()
     {
         maxHealth = PlayerHealth.Instance.MaxHealth;
-        baseAtk = 1;
+        baseAtk = 1f;
         baseDef = 1;
         baseSpeed = 1;
         baseAtkSpeed = 1;
-        baseCrit = 0;
-        baseCritDmg = 5;
+        baseCrit = 5;
+        baseCritDmg = 50;
         baseLifeSteal = 0;
         baseStamina = 1;
+        isCrit = false;
     }
+
+    public float CalculateDamage(float weaponDamage)
+    {
+        // Example calculation, you can adjust this formula as needed
+        float damage = weaponDamage + BaseAtk;
+        if (Random.value * 100 <= BaseCrit)
+        {
+            damage *= 1 + BaseCritDmg/100;
+            isCrit = true;
+        }
+        return damage;
+    }
+
+
 
 }

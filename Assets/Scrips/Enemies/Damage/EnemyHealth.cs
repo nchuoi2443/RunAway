@@ -17,7 +17,7 @@ public class EnemyHealth : MonoBehaviour
     private string typeOfEnemy;
     private EnemyBase baseEnemy;
 
-
+    private PlayerBaseStats playerStats;
     private void Awake()
     {
         currentHealth = maxHealth;
@@ -25,17 +25,27 @@ public class EnemyHealth : MonoBehaviour
         getHit = GetComponent<GetHit>();
         baseEnemy = GetComponent<EnemyBase>();
 
+        playerStats = GameObject.Find("Player").GetComponent<PlayerBaseStats>();
+
         if (baseEnemy != null)
         {
             typeOfEnemy = baseEnemy.typeEnemy.ToString();
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+        float damageTaken = playerStats.CalculateDamage(damage);
+        currentHealth -= damageTaken;
+        CharacterEvents.characterTookDmg.Invoke(gameObject, damageTaken, playerStats.IsCrit);
+
         knockBack.GetKnockBack(PlayerController.Instance.transform, knockBackThrust);
         StartCoroutine(getHit.GetHitEffect());
+        UpdateScore();
+    }
+
+    private void UpdateScore()
+    {
         if (currentHealth <= 0)
         {
             Instantiate(deadVFXFrefab, transform.position, quaternion.identity);
@@ -43,16 +53,12 @@ public class EnemyHealth : MonoBehaviour
             if (typeOfEnemy == "chasingEnemy")
             {
                 LevelManager.Instance.updateScore(1);
-                //GetComponent<PickUpSpawner>().SpawnPickUp();
             }
             else if (typeOfEnemy == "rangeEnemy")
             {
                 LevelManager.Instance.updateScore(3);
-                /*GetComponent<PickUpSpawner>().SpawnPickUp();
-                GetComponent<PickUpSpawner>().SpawnPickUp();*/
             }
-            //Destroy(deadVFX, 1f);
-            
+
             Die();
         }
     }

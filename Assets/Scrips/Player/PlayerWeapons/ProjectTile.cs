@@ -11,9 +11,12 @@ public class ProjectTile : MonoBehaviour
     private WeaponInfo weaponInfo;
     private Vector3 startPosition;
 
+    //private PlayerBaseStats playerStats;
+
     private void Start()
     {
         startPosition = transform.position;
+        //playerStats = ShopManager.Instance.GetComponent<PlayerBaseStats>();
     }
     private void Update()
     {
@@ -38,6 +41,7 @@ public class ProjectTile : MonoBehaviour
 
         if (!collision.isTrigger && (enemyHealth || indestructible))
         {
+            //enemyHealth?.TakeDamage(playerStats.CalculateDamage(weaponInfo.weaponDamage));
             enemyHealth?.TakeDamage(weaponInfo.weaponDamage);
             Instantiate(particleOnHitPrefabVFX, transform.position, transform.rotation);
             Destroy(gameObject);

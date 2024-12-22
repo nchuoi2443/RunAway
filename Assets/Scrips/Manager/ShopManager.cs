@@ -20,7 +20,7 @@ public class ShopManager : Singleton<ShopManager>
         goldText.text = "Coins:" + EconomyManager.Instance.GetCurrentCoin().ToString("D3");
         gameObject.SetActive(false);
 
-        playerBaseStats =  GetComponent<PlayerBaseStats>();
+        playerBaseStats =  GameObject.Find("Player").GetComponent<PlayerBaseStats>();
         goldText.color = Color.white;
         LoadPanels();
         LoadPlayerStats();
