@@ -4,17 +4,81 @@ using UnityEngine;
 
 public class BossBase : MonoBehaviour
 {
+    public BossState CurrentState;
+    public float Hp = 100;
+    public SkillManager SkillManager;
     public Transform Player;
-    public float AttackRange = 3f;
-    public float CurrentHealth = 100f;
+    public float AttackRange = 5f;
 
-    public void MoveTo(Vector3 pos) => /* navmesh or move logic */ Debug.Log($"Moving to {pos}");
-    public void PlayAnimation(string anim) => Debug.Log($"Playing animation: {anim}");
-    public void Attack() => Debug.Log("Boss attacking!");
-    public void PowerAttack() => Debug.Log("Boss RAGE attack!");
-    public void CastUltimate() => Debug.Log("Boss casting ultimate!");
+    private void Update()
+    {
+        switch (CurrentState)
+        {
+            case BossState.Idle:
+                HandleIdle();
+                break;
+            case BossState.Chasing:
+                HandleChasing();
+                break;
+            case BossState.Attacking:
+                HandleAttacking();
+                break;
+            case BossState.UsingSkill:
+                HandleUsingSkill();
+                break;
+            case BossState.Enraged:
+                HandleEnraged();
+                break;
+            case BossState.Dead:
+                HandleDead();
+                break;
+        }
+    }
 
-    public bool CanSeePlayer() => true; // Dummy
-    public float DistanceToPlayer() => Vector3.Distance(transform.position, Player.position);
-    public bool IsSkillDone() => true; // Dummy
+    void HandleIdle()
+    {
+        if (Vector3.Distance(transform.position, Player.position) < AttackRange)
+        {
+            CurrentState = BossState.Attacking;
+        }
+    }
+
+    void HandleChasing()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, Player.position, Time.deltaTime * 3);
+        if (Vector3.Distance(transform.position, Player.position) < AttackRange)
+        {
+            CurrentState = BossState.Attacking;
+        }
+    }
+
+    void HandleAttacking()
+    {
+        SkillManager.TryCastSkill(0); // Ví dụ luôn cast skill đầu tiên
+        CurrentState = BossState.Idle;
+    }
+
+    void HandleUsingSkill()
+    {
+        // Có thể thêm logic riêng nếu boss chuyển sang mode xài skill đặc biệt
+    }
+
+    void HandleEnraged()
+    {
+        // Tăng tốc độ, cooldown giảm, v.v.
+    }
+
+    void HandleDead()
+    {
+        Debug.Log("Boss is dead");
+    }
+
+    public void TakeDamage(float dmg)
+    {
+        Hp -= dmg;
+        if (Hp <= 0 && CurrentState != BossState.Dead)
+        {
+            CurrentState = BossState.Dead;
+        }
+    }
 }

@@ -20,3 +20,13 @@ public enum  ActionState
     SpecialAttack_2,
     Summon,
 }
+
+public enum BossState
+{
+    Idle,
+    Chasing,
+    Attacking,
+    UsingSkill,
+    Enraged,
+    Dead
+}

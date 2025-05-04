@@ -16,13 +16,13 @@ public class NormalPhase : IPhaseState
     }
     public void EnterPhase()
     {
-        StateMachine.Instance.ChangeState(new IdleState(_bossBase));
+        _stateMachine.ChangeState(new IdleState(_bossBase));
     }
     public void UpdatePhase()
     {
         _stateMachine.StateMachineUpdate();
 
-        if (_bossBase.CurrentHealth < 30)
+        if (_bossBase.Hp < 30)
         {
             _metaStateMachine.ChangePhase(new RagePhase(_bossBase, _metaStateMachine));
             ExitPhase();
