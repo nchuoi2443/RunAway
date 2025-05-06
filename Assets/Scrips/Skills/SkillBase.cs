@@ -17,6 +17,5 @@ public abstract class SkillBase : ScriptableObject
     public virtual void Cast(Animator animator)
     {
         lastCastTime = Time.time;
-        animator.SetTrigger(skillTriggerText);
     }
 }

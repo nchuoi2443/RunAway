@@ -1,61 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class BossBase : MonoBehaviour
 {
-    public BossState CurrentState;
+    public MetaStateMachine MetaStateMachine;
     public float Hp = 100;
+    public float MoveSpeed = 3f;
     public SkillManager SkillManager;
     public Transform Player;
     public float AttackRange = 5f;
+    public float ChasingRange = 10f;
 
-    private void Update()
+    public event System.Action OnTakeDamage;
+
+    public void BossUpdate()
     {
-        switch (CurrentState)
-        {
-            case BossState.Idle:
-                HandleIdle();
-                break;
-            case BossState.Chasing:
-                HandleChasing();
-                break;
-            case BossState.Attacking:
-                HandleAttacking();
-                break;
-            case BossState.UsingSkill:
-                HandleUsingSkill();
-                break;
-            case BossState.Enraged:
-                HandleEnraged();
-                break;
-            case BossState.Dead:
-                HandleDead();
-                break;
-        }
+        
     }
 
-    void HandleIdle()
+    public bool HandleIdle()
     {
-        if (Vector3.Distance(transform.position, Player.position) < AttackRange)
+        if (Vector3.Distance(transform.position, Player.position) < ChasingRange)
         {
-            CurrentState = BossState.Attacking;
+            return false;
         }
+        return true;
     }
 
-    void HandleChasing()
+    public void HandleChasing()
     {
-        transform.position = Vector3.MoveTowards(transform.position, Player.position, Time.deltaTime * 3);
-        if (Vector3.Distance(transform.position, Player.position) < AttackRange)
-        {
-            CurrentState = BossState.Attacking;
-        }
+        transform.position = Vector3.MoveTowards(transform.position, Player.position, Time.deltaTime * MoveSpeed);
+    }
+
+    public float CalculateDistanceToPlayer()
+    {
+        return Vector3.Distance(transform.position, Player.position);
     }
 
     void HandleAttacking()
     {
         SkillManager.TryCastSkill(0); // Ví dụ luôn cast skill đầu tiên
-        CurrentState = BossState.Idle;
+       
     }
 
     void HandleUsingSkill()
@@ -76,9 +63,19 @@ public class BossBase : MonoBehaviour
     public void TakeDamage(float dmg)
     {
         Hp -= dmg;
-        if (Hp <= 0 && CurrentState != BossState.Dead)
+
+        OnTakeDamage?.Invoke();
+
+        if (Hp <= 0)
         {
-            CurrentState = BossState.Dead;
+            if (MetaStateMachine.CurrentPhaseState is NormalPhase)
+            {
+                MetaStateMachine.ChangePhase(new RagePhase(this, MetaStateMachine));
+            }
+            else
+            {
+                HandleDead();
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ public class CastSkillState : IState
     private Animator _animator;
     private string _skillName;
 
-    CastSkillState(BossBase bossBase, string skillName)
+    public CastSkillState(BossBase bossBase, string skillName)
     {
         _bossBase = bossBase;
         _skillName = skillName;
@@ -32,6 +32,10 @@ public class CastSkillState : IState
 
     public void ExitState()
     {
-        
+        _skillName = null;
+        _bossBase = null;
+        _animator = null;
+        SkillManager = null;
     }
+    
 }

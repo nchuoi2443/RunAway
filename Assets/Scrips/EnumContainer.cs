@@ -12,13 +12,15 @@ public enum MetaStatus
 
 public enum  ActionState
 {
-    Walk,
-    Attack,
-    Idle,
-    Chase,
-    SpecialAttack_1,
-    SpecialAttack_2,
-    Summon,
+    isMoving,
+    castSkill,
+    getHit,
+    doTransform,
+    knifeSkill,
+    magicSkill,
+    jumpSkill,
+    spitFireSkill,
+    isDead,
 }
 
 public enum BossState

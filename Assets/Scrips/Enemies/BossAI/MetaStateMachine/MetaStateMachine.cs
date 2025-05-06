@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MetaStateMachine : MonoBehaviour
 {
-    private IPhaseState _currentPhaseState;
+    public IPhaseState CurrentPhaseState;
     private BossBase _bossBase;
 
     private void Start()
@@ -15,19 +15,19 @@ public class MetaStateMachine : MonoBehaviour
 
     public void ChangePhase(IPhaseState phaseState)
     {
-        if (_currentPhaseState != null)
+        if (CurrentPhaseState != null)
         {
-            _currentPhaseState.ExitPhase();
+            CurrentPhaseState.ExitPhase();
         }
-        _currentPhaseState = phaseState;
-        _currentPhaseState.EnterPhase();
+        CurrentPhaseState = phaseState;
+        CurrentPhaseState.EnterPhase();
     }
 
     public void Update()
     {
-        if (_currentPhaseState != null)
+        if (CurrentPhaseState != null)
         {
-            _currentPhaseState.UpdatePhase();
+            CurrentPhaseState.UpdatePhase();
         }
     }
 }
