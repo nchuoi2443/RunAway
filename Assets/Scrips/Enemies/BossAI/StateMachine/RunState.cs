@@ -19,9 +19,12 @@ public class RunState : IState
     private float _lastSpitFireTime = -Mathf.Infinity;
     private float _lastCastMagicTime = -Mathf.Infinity;
 
-    public RunState(BossBase bossBase)
+    private StateMachine _stateMachine;
+
+    public RunState(BossBase bossBase, StateMachine stateMachine)
     {
         this._bossBase = bossBase;
+        _stateMachine = stateMachine;
     }
 
     public void EnterState()
@@ -45,19 +48,19 @@ public class RunState : IState
             if (distanceToPlayer <= _bossBase.AttackRange && Time.time >= _lastKnifeTime + _knifeCooldown)
             {
                 _animator.SetTrigger(ActionState.castSkill.ToString());
-                StateMachine.Instance.ChangeState(new CastSkillState(_bossBase, ActionState.knifeSkill.ToString()));
+                _stateMachine.ChangeState(new CastSkillState(_bossBase, ActionState.knifeSkill.ToString(), _stateMachine));
                 _lastKnifeTime = Time.time;
             }
             else if (distanceToPlayer > _bossBase.AttackRange && distanceToPlayer <= 10f && Time.time >= _lastSpitFireTime + _spitFireCooldown)
             {
                 _animator.SetTrigger(ActionState.castSkill.ToString());
-                StateMachine.Instance.ChangeState(new CastSkillState(_bossBase, ActionState.spitFireSkill.ToString()));
+                _stateMachine.ChangeState(new CastSkillState(_bossBase, ActionState.spitFireSkill.ToString(), _stateMachine));
                 _lastSpitFireTime = Time.time;
             }
             else if (distanceToPlayer > 10f && Time.time >= _lastCastMagicTime + _castMagicCooldown)
             {
                 _animator.SetTrigger(ActionState.castSkill.ToString());
-                StateMachine.Instance.ChangeState(new CastSkillState(_bossBase, ActionState.magicSkill.ToString()));
+                _stateMachine.ChangeState(new CastSkillState(_bossBase, ActionState.magicSkill.ToString(), _stateMachine));
                 _lastCastMagicTime = Time.time;
             }
             else
@@ -66,7 +69,7 @@ public class RunState : IState
                 if (_timer >= _maxChasingTime && Time.time >= _lastJumpTime + _jumpCooldown)
                 {
                     _animator.SetTrigger(ActionState.castSkill.ToString());
-                    StateMachine.Instance.ChangeState(new CastSkillState(_bossBase, ActionState.jumpSkill.ToString()));
+                    _stateMachine.ChangeState(new CastSkillState(_bossBase, ActionState.jumpSkill.ToString(), _stateMachine));
                     _lastJumpTime = Time.time;
                 }
             }

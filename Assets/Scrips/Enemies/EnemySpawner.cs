@@ -5,65 +5,66 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    private int wayCounter;
-    private float wayTimerDefault;
-    private float currentWayTimer;
+    [SerializeField] private ShopManager _shopManager;
+    [SerializeField] private TMP_Text _wayText;
+    [SerializeField] private TMP_Text _currentWayText;
+    
+    private int _wayCounter;
+    private float _wayTimerDefault;
+    private float _currentWayTimer;
+    private float _timeWaitBeforeNewWay = 4f;
+    private bool _countable = true;
 
-    private float timeWaitBeforeNewWay = 4f;
-
-    private TMP_Text wayText;
-    private TMP_Text currentWayText;
-
-    private bool countable = true;
     private void Awake()
     {
-        wayCounter = 1;
-        wayTimerDefault = 30f;
-        currentWayTimer = wayTimerDefault;
-        wayText = GameObject.Find("WayCounter").GetComponent<TMP_Text>();
-        currentWayText = GameObject.Find("CurrentWay").GetComponent<TMP_Text>();
+        _wayCounter = 1;
+        _wayTimerDefault = 30f;
+        _currentWayTimer = _wayTimerDefault;
+        _wayText = GameObject.Find("WayCounter").GetComponent<TMP_Text>();
+        _currentWayText = GameObject.Find("CurrentWay").GetComponent<TMP_Text>();
 
     }
 
     private void Update()
     {
-        
-        HandleTextOut();
+        if (LevelManager.Instance.IsPause) return;
 
+        HandleTextOut();
         TimerHandle();
     }
 
     private void TimerHandle()
     {
-        if (!countable) return;
+        if (!_countable) return;
 
-        currentWayTimer -= Time.deltaTime;
-        if (currentWayTimer > 0) return;
+        _currentWayTimer -= Time.deltaTime;
+        if (_currentWayTimer > 0) return;
         StopCoroutine(GameManager.Instance.SpawnEnemies());
         
 
         GameManager.Instance.RemoveAllEnemies();
-        ShopManager.Instance.gameObject.SetActive(true);
-        Time.timeScale = 0;
+        _shopManager.gameObject.SetActive(true);
+        LevelManager.Instance.IsPause = true;
         Inventory.Instance.gameObject.SetActive(false);
         StartCoroutine(BeforeNewWay());
 
-        currentWayTimer = wayTimerDefault;
-        wayCounter++;
+        _currentWayTimer = _wayTimerDefault;
+        _wayCounter++;
         
     }
 
     private IEnumerator BeforeNewWay()
     {
-        countable = false;
-        yield return new WaitForSeconds(timeWaitBeforeNewWay);
+        _countable = false;
+        LevelManager.Instance.IsPause = false;
+        yield return new WaitForSeconds(_timeWaitBeforeNewWay);
         StartCoroutine(GameManager.Instance.SpawnEnemies());
-        countable = true;
+        _countable = true;
     }
 
     private void HandleTextOut()
     {
-        wayText.text = "Way:" + wayCounter.ToString();
-        currentWayText.text = "Time left:" + currentWayTimer.ToString("F0");
+        _wayText.text = "Way:" + _wayCounter.ToString();
+        _currentWayText.text = "Time left:" + _currentWayTimer.ToString("F0");
     }    
 }

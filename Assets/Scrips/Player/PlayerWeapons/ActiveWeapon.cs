@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ActiveWeapon : Singleton<ActiveWeapon>
 {
-    public MonoBehaviour GetCurrentWeapon { get; private set; }
+    public IWeapon GetCurrentWeapon { get; private set; }
 
     private PlayerControls playerControls;
     private bool attackButtonPressed, isAttacking = false;
@@ -40,7 +40,8 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
     private void Update()
     {
         Attack();
-       
+        if (!LevelManager.Instance.IsPause)
+            GetCurrentWeapon?.WeaponUpdate();
     }
 
     private void AttackCooldown()
@@ -71,17 +72,17 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
         if (attackButtonPressed && !isAttacking && !Inventory.Instance.IsInventoryNull)
         {
             AttackCooldown();
-            (GetCurrentWeapon as IWeapon).Attack();
+            GetCurrentWeapon.Attack();
         }
     }
 
-    public void NewWeapon(MonoBehaviour newWeapon)
+    public void NewWeapon(IWeapon newWeapon)
     {
         GetCurrentWeapon = newWeapon;
 
         isAttacking = false;
         AttackCooldown();
-        timeBetweenattacks = (GetCurrentWeapon as IWeapon).GetWeaponInfo().weaponCooldown;
+        timeBetweenattacks = GetCurrentWeapon.GetWeaponInfo().weaponCooldown;
     }
 
     public void WeaponNull()

@@ -2,21 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachine : MonoBehaviour
+public class StateMachine 
 {
-    public static StateMachine Instance;
     private IState _currentState;
+    private BossBase _bossBase;
 
-    private void Awake()
+    public StateMachine(BossBase bossBase)
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        _bossBase = bossBase;
+    }
+
+    public void Init()
+    {
+        _currentState = new IdleState(_bossBase, this);
+        _currentState.EnterState();
     }
 
     public void ChangeState(IState state)
@@ -33,4 +32,6 @@ public class StateMachine : MonoBehaviour
     {
         _currentState.UpdateState();
     }
+
+
 }

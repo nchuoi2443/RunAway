@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : Singleton<Inventory>
+public class Inventory : MonoBehaviour
 {
+    public static Inventory Instance;
     private int activeItemIndex = 0;
    
     private PlayerControls playerControls;
     public bool IsInventoryNull { set; get; }
-    protected override void Awake()
+    protected void Awake()
     {
-     
+        if (Instance == null)
+        {
+            Instance = this;
+        }
         playerControls = new PlayerControls();
         ToggleActiveHighlight(0);
     }
@@ -33,12 +37,14 @@ public class Inventory : Singleton<Inventory>
 
     private void ToggleActiveHighlight(int indexNum)
     {
+        if (transform == null) return;
+
         activeItemIndex = indexNum;
-        foreach (Transform child in this.transform)
+        foreach (Transform child in transform)
         {
             child.GetChild(0).gameObject.SetActive(false);
         }
-        this.transform.GetChild(indexNum).GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(indexNum).GetChild(0).gameObject.SetActive(true);
 
         ChangeInventoryItem();
     }
@@ -48,9 +54,13 @@ public class Inventory : Singleton<Inventory>
         //Debug.Log(transform.GetChild(activeItemIndex).GetComponent<InventorySlot>().GetWeaponInfo().weaponPrefab.name);
         if (ActiveWeapon.Instance.GetCurrentWeapon != null)
         {
-            Destroy(ActiveWeapon.Instance.GetCurrentWeapon.gameObject);
+            // Cast the IWeapon to MonoBehaviour to access the gameObject property
+            MonoBehaviour currentWeaponMono = ActiveWeapon.Instance.GetCurrentWeapon as MonoBehaviour;
+            if (currentWeaponMono != null)
+            {
+                Destroy(currentWeaponMono.gameObject);
+            }
             playerControls.Combat.Enable();
-            
         }
 
         if (!transform.GetChild(activeItemIndex).GetComponentInChildren<InventorySlot>())
@@ -71,6 +81,6 @@ public class Inventory : Singleton<Inventory>
 
         IsInventoryNull = false;
         Debug.Log("New Weapon: " + newWeapon.name);
-        ActiveWeapon.Instance.NewWeapon(newWeapon.GetComponent<MonoBehaviour>());
+        ActiveWeapon.Instance.NewWeapon(newWeapon.GetComponent<IWeapon>());
     }
 }

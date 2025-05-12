@@ -8,11 +8,13 @@ public class CastSkillState : IState
     private BossBase _bossBase;
     private Animator _animator;
     private string _skillName;
+    private StateMachine _stateMachine;
 
-    public CastSkillState(BossBase bossBase, string skillName)
+    public CastSkillState(BossBase bossBase, string skillName, StateMachine stateMachine)
     {
         _bossBase = bossBase;
         _skillName = skillName;
+        _stateMachine = stateMachine;
     }
 
     public void EnterState()
@@ -26,7 +28,7 @@ public class CastSkillState : IState
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
         if (stateInfo.IsName(_skillName) && stateInfo.normalizedTime >= 1.0f)
         {
-            StateMachine.Instance.ChangeState(new IdleState(_bossBase));
+            _stateMachine.ChangeState(new IdleState(_bossBase, _stateMachine));
         }
     }
 

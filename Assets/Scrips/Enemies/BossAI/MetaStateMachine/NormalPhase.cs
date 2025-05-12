@@ -11,12 +11,13 @@ public class NormalPhase : IPhaseState
     public NormalPhase(BossBase bossBase, MetaStateMachine metaStateMachine)
     {
         this._bossBase = bossBase;
-        _stateMachine = new StateMachine();
+        _stateMachine = new StateMachine(_bossBase);
+        _stateMachine.Init();
         _metaStateMachine = metaStateMachine;
     }
     public void EnterPhase()
     {
-        _stateMachine.ChangeState(new IdleState(_bossBase));
+        //_stateMachine.ChangeState(new IdleState(_bossBase));
     }
     public void UpdatePhase()
     {
@@ -31,6 +32,6 @@ public class NormalPhase : IPhaseState
     public void ExitPhase()
     {
         //clean up data
-        
+        //Destroy(_stateMachine);
     }
 }

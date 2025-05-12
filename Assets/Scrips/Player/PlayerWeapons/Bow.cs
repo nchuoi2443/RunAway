@@ -20,10 +20,6 @@ public class Bow : MonoBehaviour, IWeapon
         animator = GetComponent<Animator>();
     }
 
-    private void Update()
-    {
-        FaceMouse();
-    }
 
     public void Attack()
     {
@@ -32,7 +28,7 @@ public class Bow : MonoBehaviour, IWeapon
         newArrow.GetComponent<ProjectTile>().UpdateWeaponInfo(weaponInfo);
     }
 
-    public void FaceMouse()
+    public void FollowingOffSet()
     {
         Vector3 mousePosition = Input.mousePosition;
         Vector3 playerScreenMouse = Camera.main.WorldToScreenPoint(PlayerController.Instance.transform.position);
@@ -40,8 +36,10 @@ public class Bow : MonoBehaviour, IWeapon
         float angle = Mathf.Atan2(mousePosition.y - playerScreenMouse.y, mousePosition.x - playerScreenMouse.x) * Mathf.Rad2Deg;
 
         ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, 0, angle);
-
     }
 
-    
+    public void WeaponUpdate()
+    {
+        FollowingOffSet();
+    }
 }

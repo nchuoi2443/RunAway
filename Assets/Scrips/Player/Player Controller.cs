@@ -89,7 +89,8 @@ public class PlayerController : Singleton<PlayerController>
     private void Update()
     {
         PlayerInput();
-        playerFacingMouse();
+        if(!LevelManager.Instance.IsPause)
+            playerFacingMouse();
     }
 
     private void PlayerInput()

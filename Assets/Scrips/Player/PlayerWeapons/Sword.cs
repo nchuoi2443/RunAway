@@ -32,14 +32,6 @@ public class Sword : MonoBehaviour, IWeapon
         weaponCollider = PlayerController.Instance.GetWeaponCollider;
     }
 
-    private void Update()
-    {
-        followingOffSet();
-        if (slashPosSpawn == null)
-        {
-            slashPosSpawn = GameObject.Find("SlashSpawnPoint").transform;
-        }
-    }
 
 
     public void Attack()
@@ -77,7 +69,15 @@ public class Sword : MonoBehaviour, IWeapon
         }
     }
 
-    private void followingOffSet()
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("Killed enemy");
+        }
+    }
+
+    public void FollowingOffSet()
     {
         Vector3 mousePos = Input.mousePosition;
         //bug không lấy được instance của player controller, do scrip playerController nằm ở đối tượng parents 
@@ -89,24 +89,23 @@ public class Sword : MonoBehaviour, IWeapon
         if (mousePos.x < playerScreenpoint.x)
         {
             ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, -180, angle);
-            weaponCollider.transform.rotation = Quaternion.Euler(0, -180, 0);
+            if (weaponCollider != null)
+                weaponCollider.transform.rotation = Quaternion.Euler(0, -180, 0);
         }
         else
         {
             ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, 0, angle);
-            weaponCollider.transform.rotation = Quaternion.Euler(0, 0, 0);
+            if (weaponCollider != null)
+                weaponCollider.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
 
-
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void WeaponUpdate()
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        FollowingOffSet();
+        if (slashPosSpawn == null)
         {
-            Debug.Log("Killed enemy");
+            slashPosSpawn = GameObject.Find("SlashSpawnPoint").transform;
         }
     }
-
-    
 }

@@ -17,6 +17,8 @@ public class LevelManager : Singleton<LevelManager>
 
     [SerializeField] private List<GameObject> canvasUI;
 
+    public bool IsPause = false;
+
     public int Score
     {
         get {  return score; }
@@ -69,12 +71,14 @@ public class LevelManager : Singleton<LevelManager>
     {
         canvasUI[0].SetActive(true);
         Time.timeScale = 0;
+        IsPause = true;
     }
 
     public void Resume()
     {
         canvasUI[0].SetActive(false);
         Time.timeScale = 1;
+        IsPause = false;
     }
 
     public void BackToMainMenu(string name) {

@@ -6,7 +6,7 @@ using UnityEngine;
 public class MetaStateMachine : MonoBehaviour
 {
     public IPhaseState CurrentPhaseState;
-    private BossBase _bossBase;
+    [SerializeField] private BossBase _bossBase;
 
     private void Start()
     {

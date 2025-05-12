@@ -11,16 +11,12 @@ public class Staff : MonoBehaviour, IWeapon
         return weaponInfo;
     }
 
-    private void Update()
-    {
-        MouseFollowingOffset();
-    }
     public void Attack()
     {
         Debug.Log("Staff Attack");
     }
 
-    private void MouseFollowingOffset()
+    public void FollowingOffSet()
     {
         Vector3 mousePosition = Input.mousePosition;
         Vector3 playerScreenMouse = Camera.main.WorldToScreenPoint(PlayerController.Instance.transform.position);
@@ -35,5 +31,10 @@ public class Staff : MonoBehaviour, IWeapon
         {
             ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, 0, angle);
         }
+    }
+
+    public void WeaponUpdate()
+    {
+        FollowingOffSet();
     }
 }

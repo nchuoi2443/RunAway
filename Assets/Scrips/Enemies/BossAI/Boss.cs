@@ -6,10 +6,11 @@ using UnityEngine.Rendering;
 public class BossBase : MonoBehaviour
 {
     public MetaStateMachine MetaStateMachine;
-    public float Hp = 100;
-    public float MoveSpeed = 3f;
     public SkillManager SkillManager;
     public Transform Player;
+
+    public float MoveSpeed = 3f;
+    public float Hp = 100;
     public float AttackRange = 5f;
     public float ChasingRange = 10f;
 
@@ -77,5 +78,10 @@ public class BossBase : MonoBehaviour
                 HandleDead();
             }
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        TakeDamage(10);
     }
 }

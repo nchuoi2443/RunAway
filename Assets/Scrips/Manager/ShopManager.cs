@@ -4,9 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopManager : Singleton<ShopManager>
+public class ShopManager : MonoBehaviour
 {
-
+    public static ShopManager Instance { get; private set; }
     [SerializeField] public TMP_Text goldText;
     [SerializeField] private ShopScriptableO[] shopItems;
     [SerializeField] ShopTemplate[] shopTemplates;
@@ -14,24 +14,38 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField] TMP_Text[] playerStatsText;
     private PlayerBaseStats playerBaseStats;
     private int[] randomIndex;
-    
-    private void Start()
-    {
-        goldText.text = "Coins:" + EconomyManager.Instance.GetCurrentCoin().ToString("D3");
-        gameObject.SetActive(false);
 
-        playerBaseStats =  GameObject.Find("Player").GetComponent<PlayerBaseStats>();
-        goldText.color = Color.white;
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        playerBaseStats = GameObject.Find("Player").GetComponent<PlayerBaseStats>();
         LoadPanels();
         LoadPlayerStats();
         CheckPurchasable();
+    }
 
+    private void Start()
+    {
+
+        goldText.text = "Coins:" + EconomyManager.Instance.GetCurrentCoin().ToString("D3");
+        goldText.color = Color.white;
         for (int i = 0; i < buyButtons.Length; i++)
         {
-            int index = i; 
+            int index = i;
             buyButtons[i].onClick.AddListener(() => UpdatePlayerStats(index));
         }
     }
+
+    private void OnEnable()
+    {
+        LoadPanels();
+        LoadPlayerStats();
+        CheckPurchasable();
+    }
+
 
     private void Update()
     {

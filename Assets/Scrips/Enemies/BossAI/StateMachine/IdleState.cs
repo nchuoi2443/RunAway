@@ -6,16 +6,22 @@ public class IdleState : IState
 {
     private BossBase _bossBase;
     private Animator _animator;
+    private StateMachine _stateMachine;
+    private float _timerBeforeAttack;
+    private float _timeBeforAttack;
 
-    public IdleState(BossBase bossBase)
+    public IdleState(BossBase bossBase, StateMachine stateMachine)
     {
         this._bossBase = bossBase;
+        _stateMachine = stateMachine;
     }
 
     public void EnterState()
     {
         _animator = _bossBase.GetComponent<Animator>();
         _animator.SetBool(ActionState.isMoving.ToString(), false);
+        _timeBeforAttack = 2f;
+        _timerBeforeAttack = _timeBeforAttack;
         if (_bossBase.MetaStateMachine.CurrentPhaseState is RagePhase)
         {
             _bossBase.OnTakeDamage += HandleTakeDamage;
@@ -29,12 +35,27 @@ public class IdleState : IState
 
     public void UpdateState()
     {
-        
+        if (_timerBeforeAttack > 0)
+        {
+            _timerBeforeAttack -= Time.deltaTime;
+        }
+        else
+        {
+            if (_bossBase.MetaStateMachine.CurrentPhaseState is NormalPhase)
+            {
+                _bossBase.HandleChasing();
+            }
+            else
+            {
+                _animator.SetTrigger(ActionState.castSkill.ToString());
+                _stateMachine.ChangeState(new CastSkillState(_bossBase, ActionState.knifeSkill.ToString(), _stateMachine));
+            }
+        }
     }
 
     private void HandleTakeDamage()
     {
         _animator.SetTrigger(ActionState.castSkill.ToString());
-        StateMachine.Instance.ChangeState(new CastSkillState(_bossBase, ActionState.knifeSkill.ToString()));
+        _stateMachine.ChangeState(new CastSkillState(_bossBase, ActionState.knifeSkill.ToString(), _stateMachine));
     }
 }

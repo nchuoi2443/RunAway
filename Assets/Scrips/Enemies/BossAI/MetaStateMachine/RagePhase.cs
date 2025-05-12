@@ -11,13 +11,14 @@ public class RagePhase : IPhaseState
     public RagePhase(BossBase bossBase, MetaStateMachine metaStateMachine)
     {
         this._bossBase = bossBase;
-        _stateMachine = new StateMachine();
+        _stateMachine = new StateMachine(_bossBase);
+        _stateMachine.Init();
         _metaStateMachine = metaStateMachine;
     }
 
     public void EnterPhase()
     {
-        _stateMachine.ChangeState(new IdleState(_bossBase)); //this will be tranfomation state
+        _stateMachine.ChangeState(new IdleState(_bossBase, _stateMachine));
     }
     public void UpdatePhase()
     {

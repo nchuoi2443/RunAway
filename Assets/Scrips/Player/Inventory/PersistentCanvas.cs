@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PersistentCanvas : Singleton<PersistentCanvas>
+public class PersistentCanvas : MonoBehaviour
 {
-    protected override void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
+
 }

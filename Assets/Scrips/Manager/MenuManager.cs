@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-public class MenuManager : Singleton<MenuManager>
+public class MenuManager : MonoBehaviour
 {
     [Header("Panel References")]
     [SerializeField] private RectTransform _panelMenu;
@@ -24,6 +24,7 @@ public class MenuManager : Singleton<MenuManager>
     private void Start()
     {
         _currentPanel = _panelMenu;
+        Time.timeScale = 1;
     }
 
     public void SwitchTo(RectTransform targetPanel)
