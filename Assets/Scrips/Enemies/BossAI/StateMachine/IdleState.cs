@@ -19,7 +19,7 @@ public class IdleState : IState
     public void EnterState()
     {
         _animator = _bossBase.GetComponent<Animator>();
-        _animator.SetBool(ActionState.isMoving.ToString(), false);
+        //_animator.SetBool(ActionState.isMoving.ToString(), false);
         _timeBeforAttack = 2f;
         _timerBeforeAttack = _timeBeforAttack;
         if (_bossBase.MetaStateMachine.CurrentPhaseState is RagePhase)
@@ -35,7 +35,7 @@ public class IdleState : IState
 
     public void UpdateState()
     {
-        if (_timerBeforeAttack > 0)
+        if (_timerBeforeAttack >= 0)
         {
             _timerBeforeAttack -= Time.deltaTime;
         }
@@ -47,8 +47,9 @@ public class IdleState : IState
             }
             else
             {
-                _animator.SetTrigger(ActionState.castSkill.ToString());
-                _stateMachine.ChangeState(new CastSkillState(_bossBase, ActionState.knifeSkill.ToString(), _stateMachine));
+                var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+                if (stateInfo.IsName("Tranfomation")) return;
+                _stateMachine.ChangeState(new RunState(_bossBase, _stateMachine));
             }
         }
     }

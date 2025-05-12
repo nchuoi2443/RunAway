@@ -1,21 +1,27 @@
-using System.Collections;
 using UnityEngine;
 
 [System.Serializable]
-public abstract class SkillBase : ScriptableObject
+public abstract class BaseSkill : ScriptableObject
 {
     public string skillName;
-    public string skillTriggerText;
-    public float cooldown;
-    protected float lastCastTime;
+    public float cooldownTime;
+    [HideInInspector] public float currentCooldown = 0;
 
-    public virtual bool CanCast()
+    public bool IsReady()
     {
-        return Time.time >= lastCastTime + cooldown;
+        return currentCooldown <= 0f;
     }
 
-    public virtual void Cast(Animator animator)
+    public void ReduceCooldown(float deltaTime)
     {
-        lastCastTime = Time.time;
+        if (currentCooldown > 0f)
+            currentCooldown -= deltaTime;
     }
+
+    public void StartCooldown()
+    {
+        currentCooldown = cooldownTime;
+    }
+
+    public abstract void ActivateSkill(Transform caster, Transform target);
 }

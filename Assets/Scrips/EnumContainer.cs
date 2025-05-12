@@ -15,12 +15,14 @@ public enum  ActionState
     isMoving,
     castSkill,
     getHit,
+    getHit_Base,
+    getHit_Sub,
     doTransform,
     knifeSkill,
     magicSkill,
     jumpSkill,
     spitFireSkill,
-    isDead,
+    isDeath,
 }
 
 public enum BossState

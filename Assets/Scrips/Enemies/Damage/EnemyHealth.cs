@@ -5,22 +5,21 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] private float maxHealth = 100;
     [SerializeField] private GameObject deadVFXFrefab;
 
-    private float currentHealth;
-    private KnockBack knockBack;
+    public float CurrentHealth;
+    public float MaxHealth = 100;
     private float knockBackThrust = 15f;
-    private GetHit getHit;
-    //tạo một biến để lưu loại enemy, dùng để xác định điểm khi enemy die, đồng thời tạo một biến khác để truy cập vào object của enemyheath, từ đó lấy được script baseEnemy và lấy được loại enemy từ baseEnemy
-    // Variable to store the type of enemy
     private string typeOfEnemy;
+    private KnockBack knockBack;
+    private GetHit getHit;
     private EnemyBase baseEnemy;
+    protected bool isImmuneDamage = false;
+    protected PlayerBaseStats playerStats;
 
-    private PlayerBaseStats playerStats;
-    private void Awake()
+    public virtual void Awake()
     {
-        currentHealth = maxHealth;
+        CurrentHealth = MaxHealth;
         knockBack = GetComponent<KnockBack>();
         getHit = GetComponent<GetHit>();
         baseEnemy = GetComponent<EnemyBase>();
@@ -35,10 +34,12 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        float damageTaken = playerStats.CalculateDamage(damage);
-        currentHealth -= damageTaken;
-        CharacterEvents.characterTookDmg.Invoke(gameObject, damageTaken, playerStats.IsCrit);
+        if (isImmuneDamage)
+        {
+            return;
+        }
 
+        CalculateDamage(damage);
         knockBack.GetKnockBack(PlayerController.Instance.transform, knockBackThrust);
         StartCoroutine(getHit.GetHitEffect());
         UpdateScore();
@@ -46,8 +47,14 @@ public class EnemyHealth : MonoBehaviour
 
     private void UpdateScore()
     {
-        if (currentHealth <= 0)
+        if (CurrentHealth <= 0)
         {
+            if (typeOfEnemy == null)
+            {
+                HPRunOut();
+                return;
+            }
+            
             Instantiate(deadVFXFrefab, transform.position, quaternion.identity);
 
             if (typeOfEnemy == "chasingEnemy")
@@ -59,14 +66,22 @@ public class EnemyHealth : MonoBehaviour
                 LevelManager.Instance.updateScore(3);
             }
 
-            Die();
+            HPRunOut();
         }
     }
 
-    private void Die()
+    public virtual void HPRunOut()
     {
         GetComponent<PickUpSpawner>().SpawnPickUp(2);
         Destroy(gameObject);
         GameManager.Instance.RemoveEnemy(baseEnemy);
+    }
+
+    public virtual void CalculateDamage(float damage)
+    {
+        float damageTaken = playerStats.CalculateDamage(damage);
+        CurrentHealth -= damageTaken;
+        CharacterEvents.characterTookDmg.Invoke(gameObject, damageTaken, playerStats.IsCrit);
+        gameObject.GetComponent<Animator>().SetTrigger(ActionState.getHit.ToString());
     }
 }

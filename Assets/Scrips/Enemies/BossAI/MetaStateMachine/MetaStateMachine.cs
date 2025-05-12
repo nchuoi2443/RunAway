@@ -28,6 +28,7 @@ public class MetaStateMachine : MonoBehaviour
         if (CurrentPhaseState != null)
         {
             CurrentPhaseState.UpdatePhase();
+            _bossBase.BossUpdate();
         }
     }
 }

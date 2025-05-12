@@ -1,30 +1,64 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class SkillManager : MonoBehaviour
 {
-    public List<SkillBase> skills;
-    private Animator animator;
 
-    private void Start()
+    [SerializeField] private List<SkillData> skillDataList;
+
+    private Dictionary<BossSkillType, BaseSkill> skillDict = new();
+
+    private void Awake()
     {
-        animator = GetComponent<Animator>();
-    }
-
-    public void TryCastSkill(int index)
-    {
-        if (index < 0 || index >= skills.Count) return;
-
-        var skill = skills[index];
-        if (skill.CanCast())
+        //Instance = this;
+        foreach (var data in skillDataList)
         {
-            skill.Cast(animator);
+            if (!skillDict.ContainsKey(data.skillType))
+            {
+                skillDict[data.skillType] = data.skill;
+            }
         }
     }
 
-    public SkillBase GetSkillByName(string name)
+    private void Update()
     {
-        return skills.Find(skill => skill.skillName == name);
+        float delta = Time.deltaTime;
+        foreach (var skill in skillDict.Values)
+        {
+            skill.ReduceCooldown(delta);
+        }
     }
+
+    public bool TryCastSkill(BossSkillType type, Transform caster, Transform target)
+    {
+        if (skillDict.TryGetValue(type, out var skill) && skill.IsReady())
+        {
+            skill.ActivateSkill(caster, target);
+            skill.StartCooldown();
+            return true;
+        }
+        return false;
+    }
+
+    public bool IsSkillReady(BossSkillType type)
+    {
+        return skillDict.TryGetValue(type, out var skill) && skill.IsReady();
+    }
+}
+
+
+
+public enum BossSkillType
+{
+    Melee,
+    Jump,
+    Magic,
+    SpitFire,
+}
+
+[System.Serializable]
+public class SkillData
+{
+    public BossSkillType skillType;
+    public BaseSkill skill;
 }

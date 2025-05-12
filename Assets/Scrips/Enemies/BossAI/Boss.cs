@@ -7,7 +7,7 @@ public class BossBase : MonoBehaviour
 {
     public MetaStateMachine MetaStateMachine;
     public SkillManager SkillManager;
-    public Transform Player;
+    public Transform PlayerTrans;
 
     public float MoveSpeed = 3f;
     public float Hp = 100;
@@ -18,12 +18,27 @@ public class BossBase : MonoBehaviour
 
     public void BossUpdate()
     {
-        
+        FlipToFacingPlayer();
+    }
+    
+    public void FlipToFacingPlayer()
+    {
+        if (CastSkillState.Instance != null) return; 
+
+        Vector3 direction = PlayerTrans.position - transform.position;
+        if (direction.x > 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        else
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
     }
 
     public bool HandleIdle()
     {
-        if (Vector3.Distance(transform.position, Player.position) < ChasingRange)
+        if (Vector3.Distance(transform.position, PlayerTrans.position) < ChasingRange)
         {
             return false;
         }
@@ -32,28 +47,12 @@ public class BossBase : MonoBehaviour
 
     public void HandleChasing()
     {
-        transform.position = Vector3.MoveTowards(transform.position, Player.position, Time.deltaTime * MoveSpeed);
+        transform.position = Vector3.MoveTowards(transform.position, PlayerTrans.position, Time.deltaTime * MoveSpeed);
     }
 
     public float CalculateDistanceToPlayer()
     {
-        return Vector3.Distance(transform.position, Player.position);
-    }
-
-    void HandleAttacking()
-    {
-        SkillManager.TryCastSkill(0); // Ví dụ luôn cast skill đầu tiên
-       
-    }
-
-    void HandleUsingSkill()
-    {
-        // Có thể thêm logic riêng nếu boss chuyển sang mode xài skill đặc biệt
-    }
-
-    void HandleEnraged()
-    {
-        // Tăng tốc độ, cooldown giảm, v.v.
+        return Vector3.Distance(transform.position, PlayerTrans.position);
     }
 
     void HandleDead()
@@ -82,6 +81,6 @@ public class BossBase : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        TakeDamage(10);
+        gameObject.GetComponent<BossHealth>().TakeDamage(2);
     }
 }
