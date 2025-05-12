@@ -11,8 +11,10 @@ public class BossBase : MonoBehaviour
 
     public float MoveSpeed = 3f;
     public float Hp = 100;
-    public float AttackRange = 5f;
-    public float ChasingRange = 10f;
+    public float MeleeRange = 5f;
+    public float SpitFireRange = 7f;
+    public float MagicRange = 8f;
+    public float OverRange = 10f;
 
     public event System.Action OnTakeDamage;
 
@@ -36,14 +38,14 @@ public class BossBase : MonoBehaviour
         }
     }
 
-    public bool HandleIdle()
+    /*public bool HandleIdle()
     {
         if (Vector3.Distance(transform.position, PlayerTrans.position) < ChasingRange)
         {
             return false;
         }
         return true;
-    }
+    }*/
 
     public void HandleChasing()
     {

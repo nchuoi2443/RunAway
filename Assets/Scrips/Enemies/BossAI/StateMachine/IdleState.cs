@@ -48,7 +48,7 @@ public class IdleState : IState
             else
             {
                 var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-                if (stateInfo.IsName("Tranfomation")) return;
+                if (stateInfo.IsName("Tranformation")) return;
                 _stateMachine.ChangeState(new RunState(_bossBase, _stateMachine));
             }
         }

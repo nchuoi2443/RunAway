@@ -46,7 +46,7 @@ public class RunState : IState
 
         _bossBase.HandleChasing();
 
-        if (distanceToPlayer <= _bossBase.AttackRange &&
+        if (distanceToPlayer <= _bossBase.MeleeRange &&
                 _skillManager.IsSkillReady(BossSkillType.Melee))
         {
             if (_meleeEnterTime < 0f) _meleeEnterTime = Time.time; // bắt đầu đếm thời gian
@@ -58,7 +58,7 @@ public class RunState : IState
         }
         else _meleeEnterTime = -1f; // reset nếu player ra khỏi vùng
 
-        if (distanceToPlayer > _bossBase.AttackRange && distanceToPlayer <= 10f &&
+        if (distanceToPlayer > _bossBase.MeleeRange && distanceToPlayer <= _bossBase.SpitFireRange &&
                 _skillManager.IsSkillReady(BossSkillType.SpitFire))
         {
             if (_spitFireEnterTime < 0f) _spitFireEnterTime = Time.time;
@@ -70,13 +70,13 @@ public class RunState : IState
         }
         else _spitFireEnterTime = -1f;
 
-        if (distanceToPlayer > 10f && distanceToPlayer <= 12f &&
+        if (distanceToPlayer > _bossBase.SpitFireRange && distanceToPlayer <= _bossBase.OverRange &&
             _skillManager.IsSkillReady(BossSkillType.Magic))
         {
             Cast(BossSkillType.Magic, ActionState.magicSkill.ToString(), player);
         }
 
-        if (distanceToPlayer > 12f)
+        if (distanceToPlayer > _bossBase.OverRange)
         {
             _timer += Time.deltaTime;
             if (_timer >= _maxChasingTime &&
