@@ -12,6 +12,9 @@ public class CastSkillState : IState
     private StateMachine _stateMachine;
     private int _skillHash;
     private bool _hasFinished;
+    private bool _isLoop;
+    private int _loopCount = 0;
+    private int _targetLoop = 3;
 
     private Dictionary<int, string> _stateNameByHash = new Dictionary<int, string>();
 
@@ -20,11 +23,16 @@ public class CastSkillState : IState
         _bossBase = bossBase;
         _skillName = skillName;
         _stateMachine = stateMachine;
+        if (_skillName == ActionState.magicSkill.ToString())
+            _isLoop = true;
+        else
+            _isLoop = false;
     }
 
     public void EnterState()
     {
         _animator = _bossBase.GetComponent<Animator>();
+        SkillManager = _bossBase.SkillManager;
         _hasFinished = false;
         _skillHash = Animator.StringToHash("Base Layer.CastSkill." + GetSkillName(_skillName));
         _animator.SetTrigger(_skillName);
@@ -37,10 +45,25 @@ public class CastSkillState : IState
 
         if (!_animator.IsInTransition(0) && stateInfo.fullPathHash == _skillHash)
         {
-            if (!_hasFinished && stateInfo.normalizedTime >= .75f)
+            if (_isLoop)
             {
-                _hasFinished = true;
-                _stateMachine.ChangeState(new IdleState(_bossBase, _stateMachine));
+                if (stateInfo.normalizedTime >= _loopCount + .8)
+                {
+                    _loopCount++;
+
+                    if (_loopCount >= _targetLoop)
+                    {
+                        _stateMachine.ChangeState(new IdleState(_bossBase, _stateMachine));
+                    }
+                }
+            }
+            else
+            {
+                if (!_hasFinished && stateInfo.normalizedTime >= .75f)
+                {
+                    _hasFinished = true;
+                    _stateMachine.ChangeState(new IdleState(_bossBase, _stateMachine));
+                }
             }
         }
     }
@@ -70,4 +93,6 @@ public class CastSkillState : IState
                 return "UnknownSkill";
         }
     }
+
+    
 }

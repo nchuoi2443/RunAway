@@ -57,6 +57,13 @@ public class PlayerHealth : Singleton<PlayerHealth>
         }
     }
 
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+        isDead = false;
+        UpdateHealSlider();
+    }
+
     private void UpdateHealSlider()
     {
         if(healthBar == null)
@@ -87,16 +94,29 @@ public class PlayerHealth : Singleton<PlayerHealth>
         Destroy(gameObject);
     }
 
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         EnemyHealth enemy = collision.gameObject.GetComponent<EnemyHealth>();
         Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-        if (enemy || bullet)
+        string bossTag = collision.gameObject.tag;
+        if (enemy || bullet || bossTag == "BossCollider")
         {
             if(bullet) Destroy(bullet.gameObject);
             knockBack.GetKnockBack(collision.gameObject.transform, knockBackThrust);
             TakeDamage(1);
         } 
             
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        BossBase bossBase = FindObjectOfType<BossBase>();
+        string bossTag = collision.gameObject.tag;
+        if (bossTag == "BossCollider")
+        {
+            knockBack.GetKnockBack(bossBase.gameObject.transform, knockBackThrust);
+            TakeDamage(1);
+        }
     }
 }

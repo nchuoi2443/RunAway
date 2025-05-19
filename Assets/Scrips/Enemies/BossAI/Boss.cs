@@ -8,6 +8,7 @@ public class BossBase : MonoBehaviour
     public MetaStateMachine MetaStateMachine;
     public SkillManager SkillManager;
     public Transform PlayerTrans;
+    public BossHealth BossHealth;
 
     public float MoveSpeed = 3f;
     public float Hp = 100;
@@ -38,14 +39,6 @@ public class BossBase : MonoBehaviour
         }
     }
 
-    /*public bool HandleIdle()
-    {
-        if (Vector3.Distance(transform.position, PlayerTrans.position) < ChasingRange)
-        {
-            return false;
-        }
-        return true;
-    }*/
 
     public void HandleChasing()
     {
@@ -83,6 +76,6 @@ public class BossBase : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        gameObject.GetComponent<BossHealth>().TakeDamage(2);
+        //gameObject.GetComponent<BossHealth>().TakeDamage(2);
     }
 }
