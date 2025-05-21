@@ -6,7 +6,6 @@ public class BulletPooling : MonoBehaviour
 {
     public static BulletPooling Instance;
 
-    public Transform parentTrans;
     public GameObject bulletPrefab;
     public int poolSize = 30;
     
@@ -23,7 +22,7 @@ public class BulletPooling : MonoBehaviour
     {
         for (int i = 0; i < poolSize; i++)
         {
-            GameObject bullet = Instantiate(bulletPrefab, parentTrans);
+            GameObject bullet = Instantiate(bulletPrefab);
             bullet.SetActive(false);
             pool.Add(bullet);
         }
@@ -37,7 +36,7 @@ public class BulletPooling : MonoBehaviour
                 return bullet;
         }
 
-        GameObject newBullet = Instantiate(bulletPrefab, parentTrans);
+        GameObject newBullet = Instantiate(bulletPrefab);
         newBullet.SetActive(false);
         pool.Add(newBullet);
         return newBullet;

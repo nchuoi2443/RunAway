@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class LevelManager : Singleton<LevelManager>
+public class LevelManager : MonoBehaviour
 {
-    public static LevelManager manager;
+    public static LevelManager Instance;
 
     [SerializeField] private GameObject deathScreen;
 
@@ -19,13 +19,16 @@ public class LevelManager : Singleton<LevelManager>
 
     public bool IsPause = false;
 
+    
+
     public int Score
     {
         get {  return score; }
         set{ score = value; }
     }
-    protected override void Awake()
+    protected void Awake()
     {
+        if (Instance == null) Instance = this;
         HighScore.Initialize();
 
         data = new SaveData(0);

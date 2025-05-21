@@ -8,6 +8,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private EnemyFactory enemyFactory;
     [SerializeField] private float timeBetweenSpawn = 5f;
     //public List<EnemyBase> enemies = new List<EnemyBase>();
+    [SerializeField] private Transform _bossSpawnPos;
 
     [SerializeField] private List<Transform> spawnPositions = new List<Transform>();
 
@@ -36,7 +37,7 @@ public class GameManager : Singleton<GameManager>
         for (int i = 0; i < chasingEnemyNum; i++)
         {
             //enemies.Add(enemyFactory.CreateEnemy("chasingEnemy", GetRandomSpawnPosition().position).GetComponent<FollowEnemy>());
-            SpawnEnemy("chasingEnemy", GetRandomSpawnPosition().position);
+            SpawnEnemy(EnemyType.ChasingEnemy, GetRandomSpawnPosition().position);
             yield return new WaitForSeconds(timeBetweenSpawn);
         }
 
@@ -44,9 +45,14 @@ public class GameManager : Singleton<GameManager>
         for (int i = 0; i < rangeEnemyNum; i++)
         {
             //enemies.Add(enemyFactory.CreateEnemy("rangeEnemy", GetRandomSpawnPosition().position).GetComponent<ShootEnemy>());
-            SpawnEnemy("rangeEnemy", GetRandomSpawnPosition().position);
+            SpawnEnemy(EnemyType.RangeEnemy, GetRandomSpawnPosition().position);
             yield return new WaitForSeconds(timeBetweenSpawn);
         }
+    }
+
+    public void SpawnBoss()
+    {
+        enemyFactory.CreateEnemy(EnemyType.Boss, _bossSpawnPos.position);
     }
 
     public void RemoveEnemy(EnemyBase enemy)
@@ -64,7 +70,7 @@ public class GameManager : Singleton<GameManager>
         enemies.Clear();
     }
 
-    public void SpawnEnemy(string type, Vector3 spawnPosition)
+    public void SpawnEnemy(EnemyType type, Vector3 spawnPosition)
     {
         enemies.Add(enemyFactory.CreateEnemy(type, spawnPosition).GetComponent<EnemyBase>());
     }

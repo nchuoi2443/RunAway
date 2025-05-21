@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using System;
 
 public class ProjectTileSpawner : MonoBehaviour
 {
@@ -18,10 +19,10 @@ public class ProjectTileSpawner : MonoBehaviour
     private Coroutine currentWaveCoroutine;
     private bool sweepingRight = true;
 
-    private void Start()
+
+    private void Awake()
     {
-        target = FindObjectOfType<PlayerHealth>().gameObject.transform;
-        //gameObject.SetActive(false);
+        target = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void OnEnable()

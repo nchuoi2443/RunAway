@@ -58,8 +58,15 @@ public class EnemySpawner : MonoBehaviour
         _countable = false;
         LevelManager.Instance.IsPause = false;
         yield return new WaitForSeconds(_timeWaitBeforeNewWay);
-        StartCoroutine(GameManager.Instance.SpawnEnemies());
-        _countable = true;
+        if (_wayCounter % 2 == 0)
+        {
+            GameManager.Instance.SpawnBoss();
+        }
+        else
+        {
+            StartCoroutine(GameManager.Instance.SpawnEnemies());
+            _countable = true;
+        }
     }
 
     private void HandleTextOut()

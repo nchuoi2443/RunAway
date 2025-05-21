@@ -19,6 +19,11 @@ public class BossBase : MonoBehaviour
 
     public event System.Action OnTakeDamage;
 
+    private void Start()
+    {
+        PlayerTrans = FindObjectOfType<PlayerHealth>().transform;
+    }
+
     public void BossUpdate()
     {
         FlipToFacingPlayer();

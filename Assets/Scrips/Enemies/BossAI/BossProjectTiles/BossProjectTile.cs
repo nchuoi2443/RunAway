@@ -20,6 +20,11 @@ public class BossProjectTile : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
+    private void OnEnable()
+    {
+        isCollided = false;
+    }
+
     private void OnDisable()
     {
         speed = 0f;
