@@ -15,7 +15,11 @@ public class Inventory : MonoBehaviour
         {
             Instance = this;
         }
-        playerControls = new PlayerControls();
+        else
+        {
+            Destroy(gameObject);
+        }
+            playerControls = new PlayerControls();
         ToggleActiveHighlight(0);
     }
 

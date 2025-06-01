@@ -4,40 +4,36 @@ using UnityEngine;
 
 public class PlayerBaseStats : MonoBehaviour
 {
+    public static PlayerBaseStats Instance;
+
     private float maxHealth;
     private float baseAtk;
     private float baseDef;
     private float baseSpeed;
-    private float baseAtkSpeed;
     private float baseCrit;
     private float baseCritDmg;
-    private float baseLifeSteal;
-    [Range(1, 3)]
-    private int baseStamina;
+    private float baseSelfHealingRate;
     private bool isCrit;
     public bool IsCrit { get { return isCrit; } set { isCrit = value; } }
-
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
     public float BaseAtk { get => baseAtk; set => baseAtk = value; }
     public float BaseDef { get => baseDef; set => baseDef = value; }
     public float BaseSpeed { get => baseSpeed; set => baseSpeed = value; }
-    public float BaseAtkSpeed { get => baseAtkSpeed; set => baseAtkSpeed = value; }
     public float BaseCrit { get => baseCrit; set => baseCrit = value; }
     public float BaseCritDmg { get => baseCritDmg; set => baseCritDmg = value; }
-    public float BaseLifeSteal { get => baseLifeSteal; set => baseLifeSteal = value; }
-    public int BaseStamina { get => baseStamina; set => baseStamina = value; }
+    public float BaseSelfHealingRate { get => baseSelfHealingRate; set => baseSelfHealingRate = value; }
 
     private void Awake()
     {
+        Instance = this;
+
         maxHealth = PlayerHealth.Instance.MaxHealth;
-        baseAtk = 1f;
-        baseDef = 1;
-        baseSpeed = 1;
-        baseAtkSpeed = 1;
+        baseAtk = 2f;
+        baseDef = 0.2f;
+        baseSpeed = 4;
         baseCrit = 5;
         baseCritDmg = 50;
-        baseLifeSteal = 0;
-        baseStamina = 1;
+        baseSelfHealingRate = 0f;
         isCrit = false;
     }
 
@@ -47,12 +43,15 @@ public class PlayerBaseStats : MonoBehaviour
         float damage = weaponDamage + BaseAtk;
         if (Random.value * 100 <= BaseCrit)
         {
-            damage *= 1 + BaseCritDmg/100;
+            damage *= (1 + BaseCritDmg/100);
             isCrit = true;
         }
         return damage;
     }
 
-
+    public float CalculateDamagePlayerReceived(float dmgTaken)
+    {
+        return dmgTaken - baseDef;
+    }
 
 }

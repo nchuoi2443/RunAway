@@ -17,10 +17,12 @@ public class BossUIHandle : MonoBehaviour
 
     private void Update()
     {
-        if (_bossHealth != null)
-        {
-            _bossHealthSlider.maxValue = _bossHealth.MaxHealth;
-            _bossHealthSlider.value = _bossHealth.CurrentHealth;
-        }
+        if (_bossHealth == null) return;
+
+        
+        _bossHealthSlider.maxValue = _bossHealth.MaxHealth;
+        _bossHealthSlider.value = _bossHealth.CurrentHealth;
     }
+
+
 }

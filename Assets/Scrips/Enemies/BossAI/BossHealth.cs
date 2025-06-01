@@ -28,9 +28,17 @@ public class BossHealth : EnemyHealth
         }
         else
         {
-            
             _animator.SetTrigger(ActionState.isDeath.ToString());
+            FindObjectOfType<PickUpSpawner>().SpawnPickUp(5);
+            EnemySpawner.Instance.IsEndBossWay();
+
         }
+    }
+
+    IEnumerator WaintToDestroyBoss()
+    {
+        yield return new WaitForSeconds(.5f);
+        Destroy(gameObject);
     }
 
     public override void CalculateDamage(float damage)

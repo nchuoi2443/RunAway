@@ -14,14 +14,14 @@ public class HealthTextHandler : MonoBehaviour
     private void Awake()
     {
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-        CharacterEvents.characterTookDmg.AddListener((character, damageReceived, isCrit) => TookDamage(character, damageReceived, isCrit));
+        CharacterEvents.characterTookDmg.AddListener((character, damageReceived, isCrit) => TookDamage(character, damageReceived,ref isCrit));
     }
 
-    public void TookDamage(GameObject character, float damageReceived, bool isCrit)
+    public void TookDamage(GameObject character, float damageReceived,ref bool isCrit)
     {
         Vector3 spawnPos = Camera.main.WorldToScreenPoint(character.transform.position);
         GameObject textPrefab = isCrit ? critText : nonCritText;
-
+        PlayerBaseStats.Instance.IsCrit = false;
         GameObject textInstance = Instantiate(textPrefab, spawnPos, Quaternion.identity, canvas.transform);
         TMP_Text tmpText = textInstance.GetComponent<TMP_Text>();
         tmpText.text = damageReceived.ToString();

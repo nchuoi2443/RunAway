@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
     [SerializeField] private float maxHealth = 10;
     [SerializeField] private float knockBackThrust = 15f;
     [SerializeField] private float damageRecoveryTime = 1f;
+    [SerializeField] private TextMeshProUGUI _currentHealTxt;
 
     private Slider healthBar;
     private float currentHealth;
@@ -19,7 +21,12 @@ public class PlayerHealth : Singleton<PlayerHealth>
 
     const string DEATH_HASH = "Dead";
 
-    public float MaxHealth { get => maxHealth; }
+    // Replace the problematic property with a standard property implementation
+    public float MaxHealth
+    {
+        get { return maxHealth; }
+        set { maxHealth = value; }
+    }
     protected override void Awake()
     {
         currentHealth = maxHealth;
@@ -31,12 +38,30 @@ public class PlayerHealth : Singleton<PlayerHealth>
     private void Start()
     {
         UpdateHealSlider();
+        StartCoroutine(RegenHealth());
     }
 
-    public void TakeDamage(int damage)
+    private IEnumerator RegenHealth()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            HealthRecovery();
+        }
+    }
+
+    private void HealthRecovery()
+    {
+        currentHealth = Mathf.Min(currentHealth + PlayerBaseStats.Instance.BaseSelfHealingRate, maxHealth);
+        UpdateHealSlider();
+    }
+
+    public void TakeDamage(float damage)
     {
         if (!canTakeDamage) return;
-        currentHealth -= damage;
+        float finalDamage = PlayerBaseStats.Instance.CalculateDamagePlayerReceived(damage);
+        currentHealth -= finalDamage;
+        CharacterEvents.characterTookDmg.Invoke(gameObject, damage, false);
         StartCoroutine(getHit.GetHitEffect());
         if (currentHealth <= 0 && !isDead)
         {
@@ -64,7 +89,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
         UpdateHealSlider();
     }
 
-    private void UpdateHealSlider()
+    public void UpdateHealSlider()
     {
         if(healthBar == null)
         {
@@ -72,6 +97,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
         }
         healthBar.maxValue = maxHealth;
         healthBar.value = currentHealth;
+        _currentHealTxt.text = currentHealth.ToString("F1") + "/" + maxHealth.ToString();
     }
 
 
@@ -100,13 +126,31 @@ public class PlayerHealth : Singleton<PlayerHealth>
         EnemyHealth enemy = collision.gameObject.GetComponent<EnemyHealth>();
         Bullet bullet = collision.gameObject.GetComponent<Bullet>();
         string bossTag = collision.gameObject.tag;
-        if (enemy || bullet || bossTag == "BossCollider")
+        if (enemy != null)
         {
-            if(bullet) Destroy(bullet.gameObject);
             knockBack.GetKnockBack(collision.gameObject.transform, knockBackThrust);
             TakeDamage(1);
-        } 
-            
+        }
+        else if (bullet != null)
+        {
+            if (bullet) Destroy(bullet.gameObject);
+            knockBack.GetKnockBack(collision.gameObject.transform, knockBackThrust);
+            TakeDamage(bullet.BulletDamage);
+        }
+        else if (bossTag == "BossCollider")
+        {
+            BossBase bossBase = collision.gameObject.GetComponent<BossBase>();
+            if (bossBase.MetaStateMachine.CurrentPhaseState is NormalPhase)
+            {
+                knockBack.GetKnockBack(bossBase.transform, knockBackThrust);
+                TakeDamage(3);
+            }
+            else
+            {
+                knockBack.GetKnockBack(bossBase.transform, knockBackThrust);
+                TakeDamage(5);
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

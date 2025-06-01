@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Damagable : MonoBehaviour
 {
-    [SerializeField] private float damageOnEnemy = 1;
+    [SerializeField] private float damageOnEnemy = 2;
     //private PlayerBaseStats playerStats;
 
     private void Start()

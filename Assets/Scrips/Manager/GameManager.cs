@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private float timeBetweenSpawn = 5f;
     //public List<EnemyBase> enemies = new List<EnemyBase>();
     [SerializeField] private Transform _bossSpawnPos;
+    [SerializeField] private BossUIHandle _bossUIHanle;
 
     [SerializeField] private List<Transform> spawnPositions = new List<Transform>();
 
@@ -33,6 +34,7 @@ public class GameManager : Singleton<GameManager>
 
     public IEnumerator SpawnEnemies()
     {
+        PlayerHealth.Instance.ResetHealth();
         // Tạo 3 kẻ địch loại Chasing
         for (int i = 0; i < chasingEnemyNum; i++)
         {
@@ -53,6 +55,8 @@ public class GameManager : Singleton<GameManager>
     public void SpawnBoss()
     {
         enemyFactory.CreateEnemy(EnemyType.Boss, _bossSpawnPos.position);
+        PlayerHealth.Instance.ResetHealth();
+        _bossUIHanle.gameObject.SetActive(true);
     }
 
     public void RemoveEnemy(EnemyBase enemy)

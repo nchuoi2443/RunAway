@@ -10,6 +10,7 @@ public class BossProjectTile : MonoBehaviour
     private float timer;
     Animator _animator;
     private bool isCollided = false;
+    [SerializeField] private float projectileDamage = 2.5f;
 
     public void Init(Vector2 dir, float spd, float lifetime)
     {
@@ -49,7 +50,7 @@ public class BossProjectTile : MonoBehaviour
         if (playerHealth != null)
         {
             isCollided = true;
-            playerHealth.TakeDamage(1);
+            playerHealth.TakeDamage(projectileDamage);
             _animator.SetTrigger("HitPlayer");
             StartCoroutine(HitPlayer());
         }
