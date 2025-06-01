@@ -31,7 +31,7 @@ public class LevelManager : MonoBehaviour
         if (Instance == null) Instance = this;
         HighScore.Initialize();
 
-        data = new SaveData(0);
+        data = new SaveData();
         deathScreen.SetActive(false);
     }
 
@@ -50,13 +50,38 @@ public class LevelManager : MonoBehaviour
         {
             data = JsonUtility.FromJson<SaveData>(loadedData);
         }
-
-        highScoreText.text = "High score: " + data.HighScore.ToString();
-
-        if (data.HighScore < score)
+        else
         {
-            data.HighScore = score;
+            data = new SaveData();
         }
+
+        if (data.HighScores == null)
+            data.HighScores = new List<int>();
+
+        bool inserted = false;
+        for (int i = 0; i < data.HighScores.Count; i++)
+        {
+            if (score > data.HighScores[i])
+            {
+                data.HighScores.Insert(i, score);
+                inserted = true;
+                break;
+            }
+        }
+        if (!inserted && data.HighScores.Count < 5)
+        {
+            data.HighScores.Add(score);
+        }
+
+        if (data.HighScores.Count > 5)
+        {
+            data.HighScores.RemoveRange(5, data.HighScores.Count - 5);
+        }
+
+        if (data.HighScores.Count > 0)
+            highScoreText.text = "Highest score: " + data.HighScores[0].ToString();
+        else
+            highScoreText.text = "Highest score: " + score.ToString();
 
         string saveData = JsonUtility.ToJson(data);
         HighScore.Save("save", saveData);
@@ -98,12 +123,21 @@ public class LevelManager : MonoBehaviour
 [System.Serializable]
 public class SaveData
 {
-    [SerializeField]  private int highScore;
+    [SerializeField] private List<int> highScores;
 
-    public int HighScore { get { return highScore; } set { highScore = value; } }
-    SaveData() { highScore = 0; }
-    public SaveData(int _hs)
+    public List<int> HighScores
     {
-        highScore = _hs;
+        get { return highScores; }
+        set { highScores = value; }
+    }
+
+    public SaveData()
+    {
+        highScores = new List<int>();
+    }
+
+    public SaveData(List<int> scores)
+    {
+        highScores = new List<int>(scores);
     }
 }

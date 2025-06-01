@@ -6,50 +6,72 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private EnemyFactory enemyFactory;
-    [SerializeField] private float timeBetweenSpawn = 5f;
+    [SerializeField] private float _timeSpawnRange = 5f;
+    [SerializeField] private float _timeSpawnChasingEnemy = 4f;
     //public List<EnemyBase> enemies = new List<EnemyBase>();
     [SerializeField] private Transform _bossSpawnPos;
     [SerializeField] private BossUIHandle _bossUIHanle;
 
     [SerializeField] private List<Transform> spawnPositions = new List<Transform>();
-
-    private int chasingEnemyNum;
-    private int rangeEnemyNum;
-
+    public int ChasingEnemyNum;
+    public int RangeEnemyNum;
+    private Coroutine chasingCoroutine;
+    private Coroutine rangeCoroutine;
     private List<EnemyBase> enemies = new List<EnemyBase>();
+
+    public int TotalEnemies;
 
     public List<EnemyBase> Enemies { get { return enemies; } set { enemies = value; } }
     private void Start()
     {
-        chasingEnemyNum = 3;
-        rangeEnemyNum = 2;
-        StartCoroutine(SpawnEnemies());
+        StartSpawning();
     }
 
-    //random vị trí xuất hiện của kẻ địch
     public Transform GetRandomSpawnPosition()
     {
         return spawnPositions[Random.Range(0, spawnPositions.Count)];
     }
 
-    public IEnumerator SpawnEnemies()
+    public void StartSpawning()
     {
-        PlayerHealth.Instance.ResetHealth();
-        // Tạo 3 kẻ địch loại Chasing
-        for (int i = 0; i < chasingEnemyNum; i++)
-        {
-            //enemies.Add(enemyFactory.CreateEnemy("chasingEnemy", GetRandomSpawnPosition().position).GetComponent<FollowEnemy>());
-            SpawnEnemy(EnemyType.ChasingEnemy, GetRandomSpawnPosition().position);
-            yield return new WaitForSeconds(timeBetweenSpawn);
-        }
+        if (chasingCoroutine == null)
+            chasingCoroutine = StartCoroutine(SpawnChasingEnemies());
+        if (rangeCoroutine == null)
+            rangeCoroutine = StartCoroutine(SpawnRangeEnemies());
+    }
 
-        // Tạo 2 kẻ địch loại Range
-        for (int i = 0; i < rangeEnemyNum; i++)
+    public void StopSpawning()
+    {
+        if (chasingCoroutine != null)
         {
-            //enemies.Add(enemyFactory.CreateEnemy("rangeEnemy", GetRandomSpawnPosition().position).GetComponent<ShootEnemy>());
-            SpawnEnemy(EnemyType.RangeEnemy, GetRandomSpawnPosition().position);
-            yield return new WaitForSeconds(timeBetweenSpawn);
+            StopCoroutine(chasingCoroutine);
+            chasingCoroutine = null;
         }
+        if (rangeCoroutine != null)
+        {
+            StopCoroutine(rangeCoroutine);
+            rangeCoroutine = null;
+        }
+    }
+
+    private IEnumerator SpawnChasingEnemies()
+    {
+        for (int i = 0; i < ChasingEnemyNum; i++)
+        {
+            SpawnEnemy(EnemyType.ChasingEnemy, GetRandomSpawnPosition().position);
+            yield return new WaitForSeconds(_timeSpawnChasingEnemy);
+        }
+        chasingCoroutine = null;
+    }
+
+    private IEnumerator SpawnRangeEnemies()
+    {
+        for (int i = 0; i < RangeEnemyNum; i++)
+        {
+            SpawnEnemy(EnemyType.RangeEnemy, GetRandomSpawnPosition().position);
+            yield return new WaitForSeconds(_timeSpawnRange);
+        }
+        rangeCoroutine = null;
     }
 
     public void SpawnBoss()
@@ -62,10 +84,12 @@ public class GameManager : Singleton<GameManager>
     public void RemoveEnemy(EnemyBase enemy)
     {
         enemies.Remove(enemy);
+        TotalEnemies--;
     }
 
     public void RemoveAllEnemies()
     {
+        TotalEnemies = 0;
         if (enemies.Count == 0) return;
         foreach (var enemy in enemies)
         {

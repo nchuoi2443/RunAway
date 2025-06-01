@@ -17,7 +17,7 @@ public class EnemySpawner : MonoBehaviour
     private float _currentWayTimer;
     private float _timeWaitBeforeNewWay = 4f;
     private bool _countable = true;
-
+    private Coroutine _beforeWaveCourotine;
     private void Awake()
     {
         Instance = this;
@@ -27,7 +27,6 @@ public class EnemySpawner : MonoBehaviour
         _currentWayTimer = _wayTimerDefault;
         _wayText = GameObject.Find("WayCounter").GetComponent<TMP_Text>();
         _currentWayText = GameObject.Find("CurrentWay").GetComponent<TMP_Text>();
-        _bossUIHandle = FindObjectOfType<BossUIHandle>();
 
     }
 
@@ -45,14 +44,18 @@ public class EnemySpawner : MonoBehaviour
 
         _currentWayTimer -= Time.deltaTime;
         if (_currentWayTimer > 0) return;
-        StopCoroutine(GameManager.Instance.SpawnEnemies());
-        
+        GameManager.Instance.StopSpawning();
+
+        if (_beforeWaveCourotine != null)
+        {
+            StopCoroutine(_beforeWaveCourotine);
+        }
 
         GameManager.Instance.RemoveAllEnemies();
         _shopManager.gameObject.SetActive(true);
         LevelManager.Instance.IsPause = true;
         Inventory.Instance.gameObject.SetActive(false);
-        StartCoroutine(BeforeNewWay());
+        _beforeWaveCourotine = StartCoroutine(BeforeNewWay());
 
         _currentWayTimer = _wayTimerDefault;
         _wayCounter++;
@@ -70,16 +73,16 @@ public class EnemySpawner : MonoBehaviour
         }
 
         yield return new WaitForSeconds(_timeWaitBeforeNewWay);
-        if (_wayCounter % 2 == 0)
+        if (_wayCounter % 1 == 0)
         {
             _bossUIHandle.gameObject.SetActive(true);
             GameManager.Instance.SpawnBoss();
-            StartCoroutine(GameManager.Instance.SpawnEnemies());
+            GameManager.Instance.StartSpawning();
         }
         else
         {
             _bossUIHandle.gameObject.SetActive(false);
-            StartCoroutine(GameManager.Instance.SpawnEnemies());
+            GameManager.Instance.StartSpawning();
             _countable = true;
         }
     }
@@ -87,13 +90,22 @@ public class EnemySpawner : MonoBehaviour
     public void IsEndBossWay()
     {
         _countable = true;
+        GameManager.Instance.RemoveAllEnemies();
         StartCoroutine(WaintToOpenShop());
     }
 
     IEnumerator WaintToOpenShop()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2f);
+        GameManager.Instance.StopSpawning();
         _shopManager.gameObject.SetActive(true);
+        LevelManager.Instance.IsPause = true;
+        Inventory.Instance.gameObject.SetActive(false);
+        if (_beforeWaveCourotine != null)
+        {
+            StopCoroutine(_beforeWaveCourotine);
+        }
+        _beforeWaveCourotine = StartCoroutine(BeforeNewWay());
     }
 
     private void HandleTextOut()

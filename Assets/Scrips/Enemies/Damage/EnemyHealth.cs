@@ -73,8 +73,8 @@ public class EnemyHealth : MonoBehaviour
     public virtual void HPRunOut()
     {
         GetComponent<PickUpSpawner>().SpawnPickUp(2);
-        Destroy(gameObject);
         GameManager.Instance.RemoveEnemy(baseEnemy);
+        Destroy(gameObject);
     }
 
     public virtual void CalculateDamage(float damage)

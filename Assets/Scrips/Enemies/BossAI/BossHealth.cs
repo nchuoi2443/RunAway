@@ -5,14 +5,14 @@ using UnityEngine;
 public class BossHealth : EnemyHealth
 {
     private MetaStateMachine _metaStateMachine;
-    private Animator _animator;
+    public Animator Animator;
     private float _maxHealthRageState;
+    public bool IsDead = false;
 
     public override void Awake()
     {
         base.Awake();
         _metaStateMachine = GetComponent<MetaStateMachine>();
-        _animator = GetComponent<Animator>();
         isImmuneDamage = false;
         _maxHealthRageState = 40;
     }
@@ -28,16 +28,19 @@ public class BossHealth : EnemyHealth
         }
         else
         {
-            _animator.SetTrigger(ActionState.isDeath.ToString());
+            IsDead = true;
+            Animator.SetTrigger(ActionState.isDeath.ToString());
+            Debug.Log("BossHealth: SetTrigger isDeath called, IsDead=" + IsDead);
             FindObjectOfType<PickUpSpawner>().SpawnPickUp(5);
             EnemySpawner.Instance.IsEndBossWay();
-
+            StartCoroutine(WaintToDestroyBoss());
+            
         }
     }
 
     IEnumerator WaintToDestroyBoss()
     {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(5f);
         Destroy(gameObject);
     }
 
@@ -61,13 +64,13 @@ public class BossHealth : EnemyHealth
 
     private IEnumerator ImmuneDamageWhenTransform(string stateName)
     {
-        _animator.SetTrigger(ActionState.doTransform.ToString());
+        Animator.SetTrigger(ActionState.doTransform.ToString());
         isImmuneDamage = true;
 
-        while (!_animator.GetCurrentAnimatorStateInfo(0).IsName(stateName))
+        while (!Animator.GetCurrentAnimatorStateInfo(0).IsName(stateName))
             yield return null;
 
-        while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+        while (Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
             yield return null;
 
         isImmuneDamage = false;
