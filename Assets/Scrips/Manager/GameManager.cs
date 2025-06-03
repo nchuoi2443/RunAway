@@ -19,7 +19,8 @@ public class GameManager : Singleton<GameManager>
     private Coroutine rangeCoroutine;
     private List<EnemyBase> enemies = new List<EnemyBase>();
 
-    public int TotalEnemies;
+    private int _totalEnemiesInBattleField;
+    public int MaxEnemiesInBattleField = 7;
 
     public List<EnemyBase> Enemies { get { return enemies; } set { enemies = value; } }
     private void Start()
@@ -56,9 +57,15 @@ public class GameManager : Singleton<GameManager>
 
     private IEnumerator SpawnChasingEnemies()
     {
+        while (_totalEnemiesInBattleField >= MaxEnemiesInBattleField)
+        {
+            yield return null;
+        }
+
         for (int i = 0; i < ChasingEnemyNum; i++)
         {
             SpawnEnemy(EnemyType.ChasingEnemy, GetRandomSpawnPosition().position);
+            _totalEnemiesInBattleField++;
             yield return new WaitForSeconds(_timeSpawnChasingEnemy);
         }
         chasingCoroutine = null;
@@ -66,9 +73,15 @@ public class GameManager : Singleton<GameManager>
 
     private IEnumerator SpawnRangeEnemies()
     {
+        while (_totalEnemiesInBattleField >= MaxEnemiesInBattleField)
+        {
+            yield return null;
+        }
+
         for (int i = 0; i < RangeEnemyNum; i++)
         {
             SpawnEnemy(EnemyType.RangeEnemy, GetRandomSpawnPosition().position);
+            _totalEnemiesInBattleField++;
             yield return new WaitForSeconds(_timeSpawnRange);
         }
         rangeCoroutine = null;
@@ -84,12 +97,12 @@ public class GameManager : Singleton<GameManager>
     public void RemoveEnemy(EnemyBase enemy)
     {
         enemies.Remove(enemy);
-        TotalEnemies--;
+        _totalEnemiesInBattleField--;
     }
 
     public void RemoveAllEnemies()
     {
-        TotalEnemies = 0;
+        _totalEnemiesInBattleField = 0;
         if (enemies.Count == 0) return;
         foreach (var enemy in enemies)
         {
