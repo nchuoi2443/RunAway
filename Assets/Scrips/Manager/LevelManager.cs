@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI highScoreText;
 
     [SerializeField] private List<GameObject> canvasUI;
+    [SerializeField] private Transform SettingPanel;
 
     public bool IsPause = false;
 
@@ -107,6 +108,12 @@ public class LevelManager : MonoBehaviour
         canvasUI[0].SetActive(false);
         Time.timeScale = 1;
         IsPause = false;
+    }
+
+    public void OpenSettingPanal()
+    {
+        canvasUI[0].SetActive(false);
+        SettingPanel.gameObject.SetActive(true);
     }
 
     public void BackToMainMenu(string name) {
