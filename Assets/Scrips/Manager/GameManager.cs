@@ -35,6 +35,7 @@ public class GameManager : Singleton<GameManager>
 
     public void StartSpawning()
     {
+        PlayerHealth.Instance.ResetHealth();
         if (chasingCoroutine == null)
             chasingCoroutine = StartCoroutine(SpawnChasingEnemies());
         if (rangeCoroutine == null)
