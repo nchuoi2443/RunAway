@@ -32,7 +32,7 @@ public class ShopManager : MonoBehaviour
     private void Start()
     {
 
-        goldText.text = "Coins:" + EconomyManager.Instance.GetCurrentCoin().ToString("D3");
+        
         for (int i = 0; i < buyButtons.Length; i++)
         {
             int index = i;
@@ -44,7 +44,7 @@ public class ShopManager : MonoBehaviour
     {
         transform.localScale = Vector3.one * .5f;
         transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack);
-
+        goldText.text = "Coins:" + EconomyManager.Instance.GetCurrentCoin().ToString("D3");
         LoadPanels();
         LoadPlayerStats();
         CheckPurchasable();

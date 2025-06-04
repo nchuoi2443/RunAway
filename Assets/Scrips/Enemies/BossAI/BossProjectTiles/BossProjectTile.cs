@@ -10,7 +10,7 @@ public class BossProjectTile : MonoBehaviour
     private float timer;
     Animator _animator;
     private bool isCollided = false;
-    [SerializeField] private float projectileDamage = 2.5f;
+    [SerializeField] private float projectileDamage = 3.5f;
 
     public void Init(Vector2 dir, float spd, float lifetime)
     {
