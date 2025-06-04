@@ -14,6 +14,7 @@ public class ProjectTileSpawner : MonoBehaviour
     public float delayBetweenBullets = 0.1f;
     public float waveDuration = 5f;
     public Transform firePoint;
+    public Transform bossTrans;
 
     private Transform target;
     private Coroutine currentWaveCoroutine;
@@ -48,7 +49,7 @@ public class ProjectTileSpawner : MonoBehaviour
 
     private void CheckTurnRight()
     {
-        float distanceToTargetX = target.position.x - firePoint.position.x;
+        float distanceToTargetX = target.position.x - bossTrans.position.x;
         if (distanceToTargetX < 0)
         {
             sweepingRight = false;
