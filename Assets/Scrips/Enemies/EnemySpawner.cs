@@ -62,6 +62,11 @@ public class EnemySpawner : MonoBehaviour
         
     }
 
+    public void UnCountable()
+    {
+        _countable = false;
+    }
+
     private IEnumerator BeforeNewWay()
     {
         _countable = false;
@@ -73,7 +78,7 @@ public class EnemySpawner : MonoBehaviour
         }
 
         yield return new WaitForSeconds(_timeWaitBeforeNewWay);
-        if (_wayCounter % 1 == 0)
+        if (_wayCounter % 2 == 0)
         {
             _bossUIHandle.gameObject.SetActive(true);
             GameManager.Instance.SpawnBoss();
@@ -90,7 +95,9 @@ public class EnemySpawner : MonoBehaviour
     public void IsEndBossWay()
     {
         _countable = true;
+        GameManager.Instance.StopSpawning();
         GameManager.Instance.RemoveAllEnemies();
+        _wayCounter++;
         StartCoroutine(WaintToOpenShop());
     }
 

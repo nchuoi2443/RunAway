@@ -24,7 +24,17 @@ public class HealthTextHandler : MonoBehaviour
         PlayerBaseStats.Instance.IsCrit = false;
         GameObject textInstance = Instantiate(textPrefab, spawnPos, Quaternion.identity, canvas.transform);
         TMP_Text tmpText = textInstance.GetComponent<TMP_Text>();
-        tmpText.text = damageReceived.ToString();
+
+        if (damageReceived - (int)damageReceived != 0)
+        {
+            tmpText.text = damageReceived.ToString("F2");
+
+        }
+        else
+        {
+            tmpText.text = damageReceived.ToString("F0");
+        }
+
 
         // Thiết lập target cho HealthText
         HealthText healthText = textInstance.GetComponent<HealthText>();

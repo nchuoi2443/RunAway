@@ -50,6 +50,10 @@ public class ShopManager : MonoBehaviour
         CheckPurchasable();
     }
 
+    private void OnDisable()
+    {
+        EconomyManager.Instance.UpdateGoldText();
+    }
 
     public void LoadPanels()
     {

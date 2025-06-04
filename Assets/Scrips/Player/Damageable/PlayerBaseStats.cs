@@ -29,7 +29,7 @@ public class PlayerBaseStats : MonoBehaviour
 
         maxHealth = PlayerHealth.Instance.MaxHealth;
         baseAtk = 2f;
-        baseDef = 0.2f;
+        baseDef = 0f;
         baseSpeed = 4;
         baseCrit = 5;
         baseCritDmg = 50;

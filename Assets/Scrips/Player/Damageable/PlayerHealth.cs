@@ -61,7 +61,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
         if (!canTakeDamage) return;
         float finalDamage = PlayerBaseStats.Instance.CalculateDamagePlayerReceived(damage);
         currentHealth -= finalDamage;
-        CharacterEvents.characterTookDmg.Invoke(gameObject, damage, false);
+        CharacterEvents.characterTookDmg.Invoke(gameObject, finalDamage, false);
         StartCoroutine(getHit.GetHitEffect());
         if (currentHealth <= 0 && !isDead)
         {
@@ -69,9 +69,10 @@ public class PlayerHealth : Singleton<PlayerHealth>
             Destroy(ActiveWeapon.Instance.gameObject);
             currentHealth = 0;
             GetComponent<Animator>().SetTrigger(DEATH_HASH);
+            EnemySpawner.Instance.UnCountable();
+            StartCoroutine(DelayedGameOver());
             
             Debug.Log("Player died");
-            StartCoroutine(DelayedGameOver());
             //Die();
 
         }
@@ -94,6 +95,11 @@ public class PlayerHealth : Singleton<PlayerHealth>
         if(healthBar == null)
         {
             healthBar = GameObject.Find("HealthSlider").GetComponent<Slider>();
+        }
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+            
         }
         healthBar.maxValue = maxHealth;
         healthBar.value = currentHealth;
@@ -126,10 +132,10 @@ public class PlayerHealth : Singleton<PlayerHealth>
         EnemyHealth enemy = collision.gameObject.GetComponent<EnemyHealth>();
         Bullet bullet = collision.gameObject.GetComponent<Bullet>();
         string bossTag = collision.gameObject.tag;
-        if (enemy != null)
+        if (enemy != null && enemy.GetComponent<BossBase>() == null)
         {
             knockBack.GetKnockBack(collision.gameObject.transform, knockBackThrust);
-            TakeDamage(1);
+            TakeDamage(1.5f);
         }
         else if (bullet != null)
         {
@@ -153,7 +159,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    /*private void OnTriggerEnter2D(Collider2D collision)
     {
         BossBase bossBase = FindObjectOfType<BossBase>();
         string bossTag = collision.gameObject.tag;
@@ -162,5 +168,5 @@ public class PlayerHealth : Singleton<PlayerHealth>
             knockBack.GetKnockBack(bossBase.gameObject.transform, knockBackThrust);
             TakeDamage(1);
         }
-    }
+    }*/
 }
